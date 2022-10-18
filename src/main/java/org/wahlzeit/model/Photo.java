@@ -11,6 +11,8 @@ import java.net.*;
 import org.wahlzeit.services.*;
 import org.wahlzeit.utils.*;
 
+import org.wahlzeit.model.Location;
+
 /**
  * A photo represents a user-provided (uploaded) photo.
  */
@@ -41,6 +43,11 @@ public class Photo extends DataObject {
 	public static final int MAX_PHOTO_HEIGHT = 600;
 	public static final int MAX_THUMB_PHOTO_WIDTH = 105;
 	public static final int MAX_THUMB_PHOTO_HEIGHT = 150;
+	
+	/**
+	 * 
+	 */
+	public Location location;
 	
 	/**
 	 * 
