@@ -1,4 +1,3 @@
-
 /*
 * Coordinate
 */
@@ -12,5 +11,5 @@ public class Coordinate {
 	/**
 	 * 
 	 */
-    public double x, y, z;
+    private double x, y, z;
 }
