@@ -15,4 +15,16 @@ public class Location {
 	 */
     public Coordinate coordinate;
     public Photo photo;
+
+	/**
+	 * 
+	 */
+	public Location(Coordinate coordinate) {
+		this.coordinate = coordinate;
+	}
+	public Location(Coordinate coordinate, Photo photo) {
+		this.coordinate = coordinate;
+		this.photo = photo;
+	}
+
 }
