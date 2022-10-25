@@ -31,7 +31,6 @@ public class Coordinate {
 		this.y = y;
 		this.z = z;
 	}
-	public Coordinate(){ }
 	/**
 	 * 
 	 */
