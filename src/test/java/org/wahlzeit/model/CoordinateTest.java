@@ -12,7 +12,7 @@ public class CoordinateTest {
 
 	@Before
 	public void initCoordinate() {
-		coordinate = new Coordinate();
+		coordinate = new Coordinate(1.0, 1.0, 1.0);
 	}
 	
 	/**
@@ -49,7 +49,7 @@ public class CoordinateTest {
 	 */
     @Test
     public void testHasLocationAssociation(){
-        coordinate.location = new Location(new Coordinate());
+        coordinate.location = new Location(new Coordinate(1.0, 1.0, 1.0));
         assertNotNull(coordinate.location);
     }
 	/**
