@@ -1,20 +1,27 @@
 #########################################################
-# First stage: image to build the application           #
+# First stage: image to  B U I L D the application           #
 #########################################################
+
+# Make Image Layers (read only)
+
+# Layer 0 
 FROM adoptopenjdk/openjdk11-openj9:alpine-slim as builder
 
 WORKDIR /builder
 
-# Copy Gradle file
+# COPY: Add files to docker image
+
+# Copy Gradle file (Layer 1)
 COPY *.gradle /builder/
 
-# Copy sources
+# Copy sources (Layer 2)
 COPY src /builder/src
 
-# Copy Gradle resources
+# Copy Gradle resources (Layer 3 and 4)
 COPY gradle /builder/gradle
 COPY gradlew /builder/gradlew
 
+# Make Container Layer (read and write)
 # Test project
 RUN ./gradlew test
 
@@ -22,9 +29,9 @@ RUN ./gradlew test
 RUN ./gradlew assemble
 
 #########################################################
-# Second stage: image to run the application            #
+# Second stage: image to  R U N  the application            #
 #########################################################
-FROM jetty:9.4-jre11-slim
+FROM jetty:9.4-jre11-slim as RUNNER
 
 
 # Pull the built files from the builder container
