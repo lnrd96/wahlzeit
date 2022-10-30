@@ -490,6 +490,10 @@ public class Photo extends DataObject {
 			location.coordinate.setX(x);
 			location.coordinate.setY(y);
 			location.coordinate.setZ(z);
+		} else {
+			Coordinate coordinate = new Coordinate(x, y, z);
+			Location location = new Location(coordinate);
+			this.location = location;
 		}
 	}
 	
