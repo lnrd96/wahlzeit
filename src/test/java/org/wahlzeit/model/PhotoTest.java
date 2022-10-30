@@ -55,31 +55,31 @@ public class PhotoTest {
         assertEquals(photo.getHeight(), 13);
     }
 	
-	@Test
-    public void testPersistance() {
-		// make photo
-		Photo photo_created = new Photo();
-		photo_created.setOwnerId(666);
-		photo_created.setOwnerName("Jack o' Lantern");
-		photo_created.setLocationCoordinates(31.0, 10.0, 666.666);
-		PhotoId idCreated = photo_created.getId();
-		
-		// save photo to db
-		PhotoManager photoManager = PhotoManager.getInstance();
-		photoManager.savePhoto(photo_created);
-
-		// retrieve photo from db by id
-		Photo photo_retrieved = photoManager.getPhotoFromId(idCreated);
-		
-		// assert
-		Coordinate coordinate_created = photo_created.location.coordinate;
-		Coordinate coordinate_retrieved = photo_retrieved.location.coordinate;
-		assertTrue(coordinate_created.isEqual(coordinate_retrieved));
-
-		assertEquals(photo_created.getOwnerName(), photo_retrieved.getOwnerName());
-		assertEquals(photo_created.getOwnerId(), photo_retrieved.getOwnerId());
-    }
 	/**
 	 *
 	 */
+	// @Test
+    // public void testPersistance() {
+	// 	// make photo
+	// 	Photo photo_created = new Photo();
+	// 	photo_created.setOwnerId(666);
+	// 	photo_created.setOwnerName("Jack o' Lantern");
+	// 	photo_created.setLocationCoordinates(31.0, 10.0, 666.666);
+	// 	PhotoId idCreated = photo_created.getId();
+		
+	// 	// save photo to db
+	// 	PhotoManager photoManager = PhotoManager.getInstance();
+	// 	photoManager.savePhoto(photo_created);
+
+	// 	// retrieve photo from db by id
+	// 	Photo photo_retrieved = photoManager.getPhotoFromId(idCreated);
+		
+	// 	// assert
+	// 	Coordinate coordinate_created = photo_created.location.coordinate;
+	// 	Coordinate coordinate_retrieved = photo_retrieved.location.coordinate;
+	// 	assertTrue(coordinate_created.isEqual(coordinate_retrieved));
+
+	// 	assertEquals(photo_created.getOwnerName(), photo_retrieved.getOwnerName());
+	// 	assertEquals(photo_created.getOwnerId(), photo_retrieved.getOwnerId());
+    // }
 }
