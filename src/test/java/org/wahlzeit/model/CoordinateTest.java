@@ -4,6 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
 public class CoordinateTest {
@@ -55,4 +57,26 @@ public class CoordinateTest {
 	/**
 	 *
 	 */
+    @Test
+    public void testGetDistance(){
+        coordinate.setX(1.3);
+        coordinate.setY(2.3);
+        coordinate.setZ(3.3);
+		Coordinate other = new Coordinate(4.5, 7.7, 9.1);
+        double distance = coordinate.getDistance(other);
+		assertEquals(distance, 8.54634, 0.0001);
+    }
+	/**
+	 *
+	 */
+    @Test
+    public void testIsEqual(){
+		Coordinate other = new Coordinate(1.0, 1.0, 1.0);
+		assertTrue(coordinate.isEqual(other));
+		
+		other.setX(0.000001);
+		assertFalse(coordinate.isEqual(other));
+	
+		assertTrue(coordinate.isEqual(coordinate));
+    }
 }
