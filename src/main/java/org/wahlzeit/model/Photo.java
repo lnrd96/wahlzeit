@@ -13,9 +13,6 @@ import org.wahlzeit.utils.*;
 
 import org.wahlzeit.model.Location;
 
-import java.util.Map;
-import java.util.HashMap;
-
 /**
  * A photo represents a user-provided (uploaded) photo.
  */
@@ -163,7 +160,7 @@ public class Photo extends DataObject {
 		double x = rset.getDouble("location_coordinate_x");
 		double y = rset.getDouble("location_coordinate_y");
 		double z = rset.getDouble("location_coordinate_z");
-		this.setLocationCoordinates(x, y, z);
+		location.setCoordinates(x, y, z);
 	}
 	
 	/**
@@ -184,9 +181,9 @@ public class Photo extends DataObject {
 		rset.updateInt("praise_sum", praiseSum);
 		rset.updateInt("no_votes", noVotes);
 		rset.updateLong("creation_time", creationTime);
-		rset.updateDouble("location_coordinate_x", this.getLocationCoordinates().get("x"));
-		rset.updateDouble("location_coordinate_y", this.getLocationCoordinates().get("y"));
-		rset.updateDouble("location_coordinate_z", this.getLocationCoordinates().get("z"));
+		rset.updateDouble("location_coordinate_x", location.getCoordinates().get("x"));
+		rset.updateDouble("location_coordinate_y", location.getCoordinates().get("y"));
+		rset.updateDouble("location_coordinate_z", location.getCoordinates().get("z"));
 	}
 
 	/**
@@ -479,37 +476,5 @@ public class Photo extends DataObject {
 	 */
 	public long getCreationTime() {
 		return creationTime;
-	}
-
-	/**
-	 * 
-	 * @methodtype set
-	 */
-	public void setLocationCoordinates(double x, double y, double z) {
-		if (location != null){
-			location.coordinate.setX(x);
-			location.coordinate.setY(y);
-			location.coordinate.setZ(z);
-		} else {
-			Coordinate coordinate = new Coordinate(x, y, z);
-			Location location = new Location(coordinate);
-			this.location = location;
-		}
-	}
-	
-	/**
-	 * 
-	 * @methodtype get
-	 */
-	public Map<String, Double> getLocationCoordinates() {
-		if (location != null){
-			Map<String, Double> coordinates = new HashMap<String, Double>();
-			coordinates.put("x", location.coordinate.getX());
-			coordinates.put("y", location.coordinate.getY());
-			coordinates.put("z", location.coordinate.getZ());
-			return coordinates;
-		} else {
-			return new HashMap<String, Double>();
-		}
 	}
 }
