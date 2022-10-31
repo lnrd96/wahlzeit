@@ -6,6 +6,8 @@ package org.wahlzeit.model;
 import org.wahlzeit.model.Coordinate;
 import org.wahlzeit.model.Photo;
 
+import java.sql.*;
+
 import java.util.Map;
 import java.util.HashMap;
 
@@ -43,6 +45,20 @@ public class Location {
 		coordinates.put("y", coordinate.getY());
 		coordinates.put("z", coordinate.getZ());
 		return coordinates;
+	}
+	/**
+	 * 
+	 */
+	public void writeOn(ResultSet rset) throws SQLException {
+		rset.updateDouble("location_coordinate_x", getCoordinates().get("x"));
+		rset.updateDouble("location_coordinate_y", getCoordinates().get("y"));
+		rset.updateDouble("location_coordinate_z", getCoordinates().get("z"));
+	}
+	public void readFrom(ResultSet rset) throws SQLException {
+		double x = rset.getDouble("location_coordinate_x");
+		double y = rset.getDouble("location_coordinate_y");
+		double z = rset.getDouble("location_coordinate_z");
+		setCoordinates(x, y, z);
 	}
 
 }
