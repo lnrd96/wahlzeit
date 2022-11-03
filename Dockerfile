@@ -11,7 +11,8 @@ WORKDIR /builder
 
 # COPY: Add files to docker image
 
-# Copy Gradle file (Layer 1)
+# Copy Gradle file (Layer 1) 
+# Second argument path is relative to location of docker file
 COPY *.gradle /builder/
 
 # Copy sources (Layer 2)
@@ -31,7 +32,9 @@ RUN ./gradlew assemble
 #########################################################
 # Second stage: image to  R U N  the application            #
 #########################################################
-FROM jetty:9.4-jre11-slim as RUNNER
+
+# jre: the Java Runtime Environment
+FROM jetty:9.4-jre11-slim as runner
 
 
 # Pull the built files from the builder container
