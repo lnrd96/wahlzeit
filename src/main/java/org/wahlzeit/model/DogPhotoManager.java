@@ -14,7 +14,14 @@ public class DogPhotoManager extends PhotoManager {
 	 * 
 	 */
 	protected static final DogPhotoManager instance = new DogPhotoManager();
-
+	
+	/**
+	 * 
+	 */
+	public static final DogPhotoManager getInstance() {
+		return instance;
+	}
+	
 	/**
 	 * In-memory cache for photos
      * @override
