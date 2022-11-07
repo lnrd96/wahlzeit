@@ -31,7 +31,7 @@ public abstract class ModelMain extends AbstractMain {
 		
  		loadGlobals();
 
-		PhotoFactory.initialize();
+		DogPhotoFactory.initialize();
 	}
 	
 	/**
@@ -77,7 +77,7 @@ public abstract class ModelMain extends AbstractMain {
 		User user = new User(userName, password, emailAddress, confirmationCode);
 		userManager.addUser(user);
 		
-		PhotoManager photoManager = PhotoManager.getInstance();
+		PhotoManager photoManager = DogPhotoManager.getInstance();
 		File photoDirFile = new File(photoDir);
 		FileFilter photoFileFilter = new FileFilter() {
 			public boolean accept(File file) {
@@ -87,7 +87,7 @@ public abstract class ModelMain extends AbstractMain {
 
 		File[] photoFiles = photoDirFile.listFiles(photoFileFilter);
 		for (int i = 0; i < photoFiles.length; i++) {
-			Photo newPhoto = photoManager.createPhoto(photoFiles[i]);
+		DogPhoto newPhoto = (DogPhoto)photoManager.createPhoto(photoFiles[i]);
 			user.addPhoto(newPhoto);
 		}
 	}

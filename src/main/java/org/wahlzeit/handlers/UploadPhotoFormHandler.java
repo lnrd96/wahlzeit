@@ -47,10 +47,12 @@ public class UploadPhotoFormHandler extends AbstractWebFormHandler {
 		}
 
 		try {
-			PhotoManager pm = PhotoManager.getInstance();
+			// PhotoManager pm = PhotoManager.getInstance();
+			DogPhotoManager pm = DogPhotoManager.getInstance();
 			String sourceFileName = us.getAsString(args, "fileName");
 			File file = new File(sourceFileName);
-			Photo photo = pm.createPhoto(file);
+			// Photo photo = pm.createPhoto(file);
+			DogPhoto photo = pm.createPhoto(file);
 
 			String targetFileName = SysConfig.getBackupDir().asString() + photo.getId().asString();
 			createBackup(sourceFileName, targetFileName);
