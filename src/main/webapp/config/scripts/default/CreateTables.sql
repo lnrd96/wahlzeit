@@ -32,7 +32,9 @@ CREATE TABLE photos (
 	creation_time bigint,
 	location_coordinate_x double precision,
 	location_coordinate_y double precision,
-	location_coordinate_z double precision
+	location_coordinate_z double precision,
+	dog_photo_id integer FOREIGN KEY REFERENCES "dog_photos" ("id") ON DELETE CASCADE ON UPDATE NO ACTION
+
 );
 
 CREATE TABLE tags (
@@ -58,6 +60,13 @@ CREATE TABLE globals (
 	last_case_id integer,
 	last_session_id integer
 );
+
+CREATE TABLE dog_photos (
+    id integer PRIMARY KEY,
+    name text,
+    cuteness_factor numeric
+);
+
 
 INSERT INTO globals (id, last_user_id, last_photo_id, last_case_id, last_session_id)
 	VALUES (0, 1, 0, 0, 0);
