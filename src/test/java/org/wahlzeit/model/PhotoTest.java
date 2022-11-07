@@ -9,9 +9,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-
 public class PhotoTest {
-	
     private Photo photo;
 
 	@Before
@@ -60,12 +58,15 @@ public class PhotoTest {
 	 */
 	// @Test
     // public void testPersistance() {
+	// 	// start wahlzeit
+	// 	// TODO
+
 	// 	// make photo
-	// 	Photo photo_created = new Photo();
+	// 	Photo photo_created = PhotoFactory.getInstance().createPhoto();
+	// 	PhotoId idCreated = photo_created.getId();
 	// 	photo_created.setOwnerId(666);
 	// 	photo_created.setOwnerName("Jack o' Lantern");
-	// 	photo_created.setLocationCoordinates(31.0, 10.0, 666.666);
-	// 	PhotoId idCreated = photo_created.getId();
+	// 	photo_created.location = new Location(new Coordinate(31.0, 10.0, 666.666));
 		
 	// 	// save photo to db
 	// 	PhotoManager photoManager = PhotoManager.getInstance();

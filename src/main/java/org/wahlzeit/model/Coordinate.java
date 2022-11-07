@@ -57,6 +57,8 @@ public class Coordinate {
 	/**
 	 * @methodtype boolean-query
 	 */
+	// TODO: https://www.baeldung.com/java-equals-hashcode-contracts
+	//		 and take count of precision, f.e. use a delta.
 	protected boolean isEqual(Coordinate other) {
 		if(this.getX() != other.getX()){
 			return false;
@@ -73,17 +75,18 @@ public class Coordinate {
 	}
 
 	/*
-	* 
+	* Is overriding the method `equals()` of the Object class.
 	*/
-   public boolean equals(Object obj) {
-	   if (this == obj)
-		   return true;
-	   if (obj == null)
-		   return false;
-	   if (getClass() != obj.getClass())
-		   return false;
-	   Coordinate other = (Coordinate) obj;
-	   return this.isEqual(other);
-   }
+	@Override
+    public boolean equals(Object obj) {
+  	    if (this == obj)
+ 		    return true;
+ 	    if (obj == null)
+ 		    return false;
+ 	    if (getClass() != obj.getClass())
+ 		    return false;
+ 	    Coordinate other = (Coordinate) obj;
+ 	    return this.isEqual(other);
+    }
 		
 }

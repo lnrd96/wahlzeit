@@ -3,7 +3,7 @@ package org.wahlzeit.model;
 import java.sql.*;
 
 /**
- * An Abstract Factory for creating dogDogPhotos and related objects.
+ * An Abstract Factory for creating dogPhotos and related objects.
  */
 public class DogPhotoFactory extends PhotoFactory {
     

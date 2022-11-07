@@ -158,7 +158,9 @@ public class Photo extends DataObject {
 		maxPhotoSize = PhotoSize.getFromWidthHeight(width, height);
 
 		// delegation to Location class
-		location.readFrom(rset);
+		if (this.location != null){
+			this.location.readFrom(rset);
+		}
 
 	}
 	
@@ -182,7 +184,9 @@ public class Photo extends DataObject {
 		rset.updateLong("creation_time", creationTime);
 		
 		// delegation to Location class
-		location.writeOn(rset);
+		if (location != null){
+			location.writeOn(rset);
+		}
 	}
 
 	/**

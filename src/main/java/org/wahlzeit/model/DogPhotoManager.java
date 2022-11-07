@@ -132,6 +132,7 @@ public class DogPhotoManager extends PhotoManager {
 		try {
 			PreparedStatement stmt = getUpdatingStatement("SELECT * FROM dog_photos WHERE id = ?");
 			updateObject(photo, stmt);
+			super.savePhoto((Photo)photo);
 		} catch (SQLException sex) {
 			SysLog.logThrowable(sex);
 		}

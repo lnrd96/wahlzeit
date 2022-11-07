@@ -86,13 +86,14 @@ public class DogPhoto extends Photo {
 	 *
 	 */
 	public void writeOn(ResultSet rset) throws SQLException {
-        super.readFrom(rset);
+        // super.writeOn(rset);
+		rset.updateInt("dog_photo_id", this.getId().getCurrentIdAsInt());
 		rset.updateInt("dog_age", age);
 		rset.updateString("dog_name", dogName);
 		rset.updateDouble("cuteness_factor", cutenessFactor);
 	}
     public void readFrom(ResultSet rset) throws SQLException {
-        super.writeOn(rset);
+        // super.readFrom(rset);
         this.age = rset.getInt("dog_age");
         this.dogName = rset.getString("dog_name");
         this.cutenessFactor = rset.getDouble("cuteness_factor");
