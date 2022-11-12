@@ -85,12 +85,31 @@ public class CartesianCoordinate implements Coordinate {
     public double getCentralAngle(Coordinate coordinate) {
         SphericCoordinate other = coordinate.asSphericCoordinate();
         return other.getCentralAngle(this);
-
     }
 
     @Override
     public boolean isEqual(Coordinate coordinate) {
-        return false;
+        return this.getCartesianDistance(coordinate) < TOLERANCE;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (o == null)
+            return false; 
+        if (!(o instanceof Coordinate)) {
+            return false;
+        }
+        // Returns true even if they are different classes
+        // as long as they are very near and both implementing the interface.
+        return this.isEqual((Coordinate) o);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y, z);
+    }
+
 
 }

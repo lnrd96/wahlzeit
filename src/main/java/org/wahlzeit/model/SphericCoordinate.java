@@ -1,4 +1,5 @@
 package org.wahlzeit.model;
+import java.util.Objects;
 import static java.lang.Math.*;
 
 public class SphericCoordinate implements Coordinate {
@@ -91,7 +92,25 @@ public class SphericCoordinate implements Coordinate {
 
     @Override
     public boolean isEqual(Coordinate coordinate) {
-        return false;
+        return this.getCartesianDistance(coordinate) < TOLERANCE;
+    }
+
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (o == null)
+            return false;
+        if (!(o instanceof Coordinate)) {
+            return false;
+        }
+        // Returns true even if they are different classes
+        // as long as they are very near and both implementing the interface.
+        return this.isEqual((Coordinate) o);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(phi, theta, radius);
     }
 
 }
