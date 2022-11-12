@@ -14,7 +14,6 @@ public class DogPhoto extends Photo {
 	/**
 	 * 
 	 */
-    protected int age;
     protected String dogName;
     protected double cutenessFactor;
 
@@ -40,17 +39,10 @@ public class DogPhoto extends Photo {
 	/**
      * @methodtype constructor
 	 */
-    public DogPhoto(String dogName, int age, double cutenessFactor){
+    public DogPhoto(String dogName, double cutenessFactor){
         super();
-        this.age = age;
         this.dogName = dogName;
         this.cutenessFactor = cutenessFactor;
-    }
-	/**
-     * @methodtype get
-	 */
-    public int getAge() {
-        return age;
     }
 	/**
      * @methodtype get
@@ -67,12 +59,6 @@ public class DogPhoto extends Photo {
 	/**
      * @methodtype set
 	 */
-    public void setAge(int age) {
-        this.age =  age;
-    }
-	/**
-     * @methodtype set
-	 */
     public void setCutenessFactor(double cutenessFactor) {
         this.cutenessFactor = cutenessFactor;
     }
@@ -82,20 +68,14 @@ public class DogPhoto extends Photo {
     public void setName(String name) {
         this.dogName = name;
     }
-	/**
-	 *
-	 */
-	public void writeOn(ResultSet rset) throws SQLException {
-        // super.writeOn(rset);
-		rset.updateInt("dog_photo_id", this.getId().getCurrentIdAsInt());
-		rset.updateInt("dog_age", age);
+    public void writeOn(ResultSet rset) throws SQLException {
+        super.writeOn(rset);
 		rset.updateString("dog_name", dogName);
-		rset.updateDouble("cuteness_factor", cutenessFactor);
-	}
-    public void readFrom(ResultSet rset) throws SQLException {
-        // super.readFrom(rset);
-        this.age = rset.getInt("dog_age");
-        this.dogName = rset.getString("dog_name");
-        this.cutenessFactor = rset.getDouble("cuteness_factor");
+		rset.updateDouble("dog_cuteness_factor", cutenessFactor);
+    }
+	public void readFrom(ResultSet rset) throws SQLException {
+        super.readFrom(rset);
+		dogName = rset.getString("dog_name");
+		cutenessFactor = rset.getDouble("cuteness_factor");
     }
 }

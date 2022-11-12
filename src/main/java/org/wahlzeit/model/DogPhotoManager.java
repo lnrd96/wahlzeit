@@ -55,7 +55,7 @@ public class DogPhotoManager extends PhotoManager {
         // cache miss -> query db
 		if (result == null) {
 			try {
-				PreparedStatement stmt = getReadingStatement("SELECT * FROM dog_photos WHERE id = ?");
+				PreparedStatement stmt = getReadingStatement("SELECT * FROM photos WHERE id = ?");
 				result = (DogPhoto) readObject(stmt, id.asInt());
 			} catch (SQLException sex) {
 				SysLog.logThrowable(sex);
@@ -95,7 +95,7 @@ public class DogPhotoManager extends PhotoManager {
 		doAddPhoto(photo);
 
 		try {
-			PreparedStatement stmt = getReadingStatement("INSERT INTO dog_photos(id) VALUES(?)");
+			PreparedStatement stmt = getReadingStatement("INSERT INTO photos(id) VALUES(?)");
 			createObject(photo, stmt, id.asInt());  // super-super method
 			ServiceMain.getInstance().saveGlobals();
 		} catch (SQLException sex) {
@@ -108,14 +108,14 @@ public class DogPhotoManager extends PhotoManager {
 	 */
 	public void loadDogPhotos(Collection<DogPhoto> result) {
 		try {
-			PreparedStatement stmt = getReadingStatement("SELECT * FROM dog_photos");
+			PreparedStatement stmt = getReadingStatement("SELECT * FROM photos");
 			readObjects(result, stmt);
 			for (Iterator<DogPhoto> i = result.iterator(); i.hasNext(); ) {
 				DogPhoto photo = i.next();
 				if (!doHasPhoto(photo.getId())) {
 					doAddPhoto(photo);
 				} else {
-					SysLog.logSysInfo("dog_photo", photo.getId().asString(), "dog photo had already been loaded");
+					SysLog.logSysInfo("photo", photo.getId().asString(), "dog photo had already been loaded");
 				}
 			}
 		} catch (SQLException sex) {
@@ -130,7 +130,7 @@ public class DogPhotoManager extends PhotoManager {
 	 */
 	public void savePhoto(DogPhoto photo) {
 		try {
-			PreparedStatement stmt = getUpdatingStatement("SELECT * FROM dog_photos WHERE id = ?");
+			PreparedStatement stmt = getUpdatingStatement("SELECT * FROM photos WHERE id = ?");
 			updateObject(photo, stmt);
 			super.savePhoto((Photo)photo);
 		} catch (SQLException sex) {
@@ -143,7 +143,7 @@ public class DogPhotoManager extends PhotoManager {
 	 */
 	public void savePhotos() {
 		try {
-			PreparedStatement stmt = getUpdatingStatement("SELECT * FROM dog_photos WHERE id = ?");
+			PreparedStatement stmt = getUpdatingStatement("SELECT * FROM photos WHERE id = ?");
 			updateObjects(photoCache.values(), stmt);
 		} catch (SQLException sex) {
 			SysLog.logThrowable(sex);
@@ -159,7 +159,7 @@ public class DogPhotoManager extends PhotoManager {
 	public Set<DogPhoto> findDogPhotosByOwner(String ownerName) {
 		Set<DogPhoto> result = new HashSet<DogPhoto>();
 		try {
-			PreparedStatement stmt = getReadingStatement("SELECT * FROM photos WHERE owner_name = ? AND dog_photo_id IS NOT NULL");
+			PreparedStatement stmt = getReadingStatement("SELECT * FROM photos WHERE owner_name = ? AND photo_id IS NOT NULL");
 			readObjects(result, stmt, ownerName);
 		} catch (SQLException sex) {
 			SysLog.logThrowable(sex);
