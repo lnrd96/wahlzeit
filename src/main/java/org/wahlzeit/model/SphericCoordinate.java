@@ -67,12 +67,26 @@ public class SphericCoordinate implements Coordinate {
 
     @Override
     public SphericCoordinate asSphericCoordinate() {
-        return null;
+        return this;
     }
 
     @Override
     public double getCentralAngle(Coordinate coordinate) {
-        return 0;
+        SphericCoordinate other = coordinate.asSphericCoordinate();
+        double phi_1 = this.getPhi();
+        double phi_2 = other.getPhi();
+        double theta_1 = this.getTheta();  // longitude $\lambda \in [-180, 180]$ degree
+        double theta_2 = other.getTheta();
+        double delta_lambda = Math.abs(theta_1 - theta_2);
+        double delta_phi = Math.abs(phi_1 - theta_2);
+        return 2 * Math.asin(
+            Math.sqrt(
+                Math.pow(Math.sin((delta_phi / 2)), 2) + 
+                (1 - Math.pow(Math.sin((delta_phi / 2)), 2) - 
+                Math.pow(Math.sin((phi_1 + phi_2) / 2), 2)) *
+                Math.pow(Math.sin(delta_lambda / 2), 2)
+            )
+        );
     }
 
     @Override
