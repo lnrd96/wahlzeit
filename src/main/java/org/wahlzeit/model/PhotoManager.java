@@ -18,9 +18,9 @@ import org.wahlzeit.services.*;
 public class PhotoManager extends ObjectManager {
 	
 	/**
-	 * 
+	 *
 	 */
-	protected static PhotoManager instance = new PhotoManager();
+	protected static DogPhotoManager instance = new DogPhotoManager();
 
 	/**
 	 * In-memory cache for photos
@@ -35,7 +35,7 @@ public class PhotoManager extends ObjectManager {
 	/**
 	 * 
 	 */
-	public static PhotoManager getInstance() {
+	public static DogPhotoManager getInstance() {
 		return instance;
 	}
 	
