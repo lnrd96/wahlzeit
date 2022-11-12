@@ -6,4 +6,5 @@ public interface Coordinate {
     public abstract SphericCoordinate asSphericCoordinate();
     public abstract double getCentralAngle(Coordinate coordinate);
     public abstract boolean isEqual(Coordinate coordinate);
+    public static final double TOLERANCE = 0.00001;  // for isEqual()
 }
