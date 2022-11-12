@@ -57,7 +57,12 @@ public class SphericCoordinate implements Coordinate {
 
     @Override
     public double getCartesianDistance(Coordinate coordinate) {
-        return 0;
+        CartesianCoordinate this_one = this.asCartesianCoordinate();
+        CartesianCoordinate other = coordinate.asCartesianCoordinate();
+        double distance = Math.sqrt(Math.pow(this_one.getX() - other.getX(), 2)
+                                  + Math.pow(this_one.getY() - other.getY(), 2)
+                                  + Math.pow(this_one.getZ() - other.getZ(), 2));
+        return distance;
     }
 
     @Override

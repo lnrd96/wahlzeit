@@ -61,7 +61,11 @@ public class CartesianCoordinate implements Coordinate {
 
     @Override
     public double getCartesianDistance(Coordinate coordinate) {
-        return 0;
+        CartesianCoordinate other = coordinate.asCartesianCoordinate();
+        double distance = Math.sqrt(Math.pow(this.getX() - other.getX(), 2)
+                                  + Math.pow(this.getY() - other.getY(), 2)
+                                  + Math.pow(this.getZ() - other.getZ(), 2));
+        return distance;
     }
 
     @Override
