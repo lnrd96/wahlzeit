@@ -1,4 +1,5 @@
 package org.wahlzeit.model;
+import static java.lang.Math.*;
 
 public class SphericCoordinate implements Coordinate {
     /**
@@ -48,7 +49,10 @@ public class SphericCoordinate implements Coordinate {
 
     @Override
     public CartesianCoordinate asCartesianCoordinate() {
-        return null;
+        double x = this.radius * Math.sin(this.phi) * Math.cos(this.theta);
+        double y = this.radius * Math.sin(this.phi) * Math.sin(this.theta);
+        double z = this.radius * Math.cos(this.phi);
+        return new CartesianCoordinate(x, y, z);
     }
 
     @Override
