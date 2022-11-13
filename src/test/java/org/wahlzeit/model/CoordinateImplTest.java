@@ -16,6 +16,7 @@ public class CoordinateImplTest {
 	@Before
 	public void initCoordinate() {
 		cartesianCoordinate = new CartesianCoordinate(1.0, 1.0, 1.0);
+        sphericCoordinate = new SphericCoordinate(1.0, 1.0, 1.0);
 	}
 	
 	/**
@@ -71,8 +72,50 @@ public class CoordinateImplTest {
     }
     @Test
     public void testSphericalDistance(){
-        // TODO
+        sphericCoordinate.setRadius(1.3);
+        sphericCoordinate.setPhi(2.3);
+        sphericCoordinate.setTheta(3.3);
+		Coordinate other = new SphericCoordinate(4.5, 7.7, 9.1);
+        double distance = sphericCoordinate.getCentralAngle(other);
+		assertEquals(distance, 1.926746, 0.00001);
     }
+    @ Test 
+    public void testSphericalDistanceInverse(){
+        cartesianCoordinate.setX(1.3);
+        cartesianCoordinate.setY(2.3);
+        cartesianCoordinate.setZ(3.3);
+		Coordinate other = new CartesianCoordinate(4.5, 7.7, 9.1);
+        double distance = cartesianCoordinate.getCentralAngle(other);
+        assertNotNull(distance);
+    }
+    @ Test 
+    public void testGetCartesianDistanceInverse(){
+        sphericCoordinate.setRadius(1.3);
+        sphericCoordinate.setPhi(2.3);
+        sphericCoordinate.setTheta(3.3);
+		Coordinate other = new SphericCoordinate(4.5, 7.7, 9.1);
+        double distance = sphericCoordinate.getCartesianDistance(other);
+        assertNotNull(distance);
+    }
+    /*
+    * 
+    */
+    @Test
+    public void testConversion(){
+        CartesianCoordinate cc = new CartesianCoordinate(3, 4, 5);
+        SphericCoordinate cs = cc.asSphericCoordinate();
+        assertEquals(cs.getRadius(), 7.0710678118655, 0.000001);
+        System.out.print(cs.getTheta());
+        assertEquals(cs.getTheta(), 0.92729521800161, 0.000001);
+        assertEquals(cs.getPhi(), 0.78539816339745, 0.000001);
+        
+        SphericCoordinate cs_ = new SphericCoordinate(30, 60, 5);
+        CartesianCoordinate cc_ = cs_.asCartesianCoordinate();
+        assertEquals(cc_.getX(), 4.705070719, 0.000001);
+        assertEquals(cc_.getY(), 1.505812665, 0.000001);
+        assertEquals(cc_.getZ(), 0.7712572494, 0.000001);
+    }
+    
 	/**
 	 *
 	 */
@@ -86,6 +129,14 @@ public class CoordinateImplTest {
 		other.setX(0.000001);
 		assertFalse(cartesianCoordinate.isEqual(other));
         
-        // TODO: verify near or converted Cartesian and Spheric are equal!
+        cartesianCoordinate.setX(0.454649);
+        cartesianCoordinate.setY(0.708073);
+        cartesianCoordinate.setZ(0.540302);
+        assertTrue(cartesianCoordinate.isEqual(sphericCoordinate));
+        
+        cartesianCoordinate.setX(0.45464);
+        cartesianCoordinate.setY(0.70807);
+        cartesianCoordinate.setZ(0.54030);
+        assertTrue(cartesianCoordinate.isEqual(sphericCoordinate));
     }
 }
