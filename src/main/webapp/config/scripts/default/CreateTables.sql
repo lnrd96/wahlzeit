@@ -33,6 +33,9 @@ CREATE TABLE photos (
 	location_coordinate_x double precision,
 	location_coordinate_y double precision,
 	location_coordinate_z double precision,
+	location_coordinate_phi double precision,
+	location_coordinate_theta double precision,
+	location_coordinate_radius double precision,
 	dog_name text,
 	dog_cuteness_factor real
 
