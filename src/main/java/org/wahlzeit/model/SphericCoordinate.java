@@ -132,7 +132,7 @@ public class SphericCoordinate implements Coordinate {
 
     @Override
     public int hashCode() {
-        return Objects.hash(phi, theta, radius);
+        return this.asCartesianCoordinate().hashCode();
     }
 
 }

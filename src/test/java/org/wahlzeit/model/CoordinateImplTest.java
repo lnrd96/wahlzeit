@@ -127,15 +127,25 @@ public class CoordinateImplTest {
 		
 		other.setX(0.000001);
 		assertFalse(cartesianCoordinate.isEqual(other));
+        // assert hashcode is not equal if coordinates are equal
+		assertFalse(cartesianCoordinate.hashCode() == other.hashCode());
+
         
         cartesianCoordinate.setX(2896.566953);
         cartesianCoordinate.setY(4511.135748);
         cartesianCoordinate.setZ(3442.265991);
+        int hash_1 = cartesianCoordinate.hashCode();
         assertTrue(cartesianCoordinate.isEqual(sphericCoordinate));
         
         cartesianCoordinate.setX(2896.566950);
         cartesianCoordinate.setY(4511.135740);
         cartesianCoordinate.setZ(3442.265990);
+        int hash_2 = cartesianCoordinate.hashCode();
         assertTrue(cartesianCoordinate.isEqual(sphericCoordinate));
+        
+        // assert hashcode is equal if coordinates are equal
+        assertTrue(hash_1 == hash_2);
+
+
     }
 }

@@ -1,4 +1,6 @@
 package org.wahlzeit.model;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.Objects;
 
 /**
@@ -8,7 +10,7 @@ import java.util.Objects;
  */
 
 
-public class CartesianCoordinate implements Coordinate {
+public class CartesianCoordinate extends AbstractCoordinate {
     /**
      * Attributes
      */
@@ -108,7 +110,13 @@ public class CartesianCoordinate implements Coordinate {
 
     @Override
     public int hashCode() {
-        return Objects.hash(x, y, z);
+        String pattern = "0.0000";  // somehow derive it from TOLERANCE?
+        DecimalFormat df = new DecimalFormat(pattern);
+        df.setRoundingMode(RoundingMode.CEILING);
+        String rounded_x = df.format(x);
+        String rounded_y = df.format(y);
+        String rounded_z = df.format(z);
+        return Objects.hash(rounded_x, rounded_y, rounded_z);
     }
 
 
