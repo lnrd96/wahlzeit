@@ -7,4 +7,5 @@ public interface Coordinate {
     public abstract double getCentralAngle(Coordinate coordinate);
     public abstract boolean isEqual(Coordinate coordinate);
     public static final double TOLERANCE = 0.00001;  // for isEqual()
+    public static final double WORLD_RADIUS_KM = 6371;  // for isEqual()
 }

@@ -104,11 +104,12 @@ public class SphericCoordinate implements Coordinate {
      * Helper methods
      */
     private void checkSphericalValueRange() {
-        if (this.theta < 0.0 || this.theta > 180.0 || this.radius < 0.0 || this.phi < 0.0 || this.phi > 360.0) {
+        if (Math.abs(this.radius - 6300) < TOLERANCE * 100)
+            System.out.print("Only dog photos taken on planet earth are allowed for animal right reasons.");
+        if (this.theta < 0.0 || this.theta > 180.0 || this.radius < 0.0 || this.phi < 0.0 || this.phi > 360.0)
             System.out.print("Invalid value range.");
-            // TODO: Throw exception or not?
-            // Problematic because the throws declaration will pull up very far.
-        }
+            // TODO: Throw exception or do sth else?
+            // Problematic because the throws declaration will pull up very far in wahlzeit.
     }
     
     /**
