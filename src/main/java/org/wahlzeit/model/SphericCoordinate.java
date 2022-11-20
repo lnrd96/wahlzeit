@@ -17,6 +17,7 @@ public class SphericCoordinate implements Coordinate {
         this.phi = phi;
         this.theta = theta;
         this.radius = radius;
+        checkSphericalValueRange();
     }
 
     public SphericCoordinate() { }
@@ -30,6 +31,7 @@ public class SphericCoordinate implements Coordinate {
 
     public void setPhi(double phi) {
         this.phi = phi;
+        checkSphericalValueRange();
     }
 
     public double getTheta() {
@@ -38,6 +40,7 @@ public class SphericCoordinate implements Coordinate {
 
     public void setTheta(double theta) {
         this.theta = theta;
+        checkSphericalValueRange();
     }
 
     public double getRadius() {
@@ -46,8 +49,12 @@ public class SphericCoordinate implements Coordinate {
 
     public void setRadius(double radius) {
         this.radius = radius;
+        checkSphericalValueRange();
     }
-
+    
+    /**
+     * Conversion methods
+     */
     @Override
     public CartesianCoordinate asCartesianCoordinate() {
         double x = this.radius * Math.sin(this.phi) * Math.cos(this.theta);
@@ -55,7 +62,15 @@ public class SphericCoordinate implements Coordinate {
         double z = this.radius * Math.cos(this.phi);
         return new CartesianCoordinate(x, y, z);
     }
+    
+    @Override
+    public SphericCoordinate asSphericCoordinate() {
+        return this;
+    }
 
+    /**
+     * Distance calculation
+     */
     @Override
     public double getCartesianDistance(Coordinate coordinate) {
         CartesianCoordinate this_one = this.asCartesianCoordinate();
@@ -64,11 +79,6 @@ public class SphericCoordinate implements Coordinate {
                                   + Math.pow(this_one.getY() - other.getY(), 2)
                                   + Math.pow(this_one.getZ() - other.getZ(), 2));
         return distance;
-    }
-
-    @Override
-    public SphericCoordinate asSphericCoordinate() {
-        return this;
     }
 
     @Override
@@ -89,7 +99,21 @@ public class SphericCoordinate implements Coordinate {
             )
         );
     }
-
+    
+    /**
+     * Helper methods
+     */
+    private void checkSphericalValueRange() {
+        if (this.theta < 0.0 || this.theta > 180.0 || this.radius < 0.0 || this.phi < 0.0 || this.phi > 360.0) {
+            System.out.print("Invalid value range.");
+            // TODO: Throw exception or not?
+            // Problematic because the throws declaration will pull up very far.
+        }
+    }
+    
+    /**
+     * Comparision methods
+     */
     @Override
     public boolean isEqual(Coordinate coordinate) {
         return this.getCartesianDistance(coordinate) < TOLERANCE;
