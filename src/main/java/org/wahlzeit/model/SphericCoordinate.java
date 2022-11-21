@@ -109,30 +109,5 @@ public class SphericCoordinate extends AbstractCoordinate {
             // Problematic because the throws declaration will pull up very far in wahlzeit.
     }
     
-    /**
-     * Comparision methods
-     */
-    @Override
-    public boolean isEqual(Coordinate coordinate) {
-        return this.getCartesianDistance(coordinate) < TOLERANCE;
-    }
-
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (o == null)
-            return false;
-        if (!(o instanceof Coordinate)) {
-            return false;
-        }
-        // Returns true even if they are different classes
-        // as long as they are very near and both implementing the interface.
-        return this.isEqual((Coordinate) o);
-    }
-
-    @Override
-    public int hashCode() {
-        return this.asCartesianCoordinate().hashCode();
-    }
 
 }

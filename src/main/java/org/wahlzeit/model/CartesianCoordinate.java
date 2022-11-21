@@ -90,25 +90,6 @@ public class CartesianCoordinate extends AbstractCoordinate {
     }
 
     @Override
-    public boolean isEqual(Coordinate coordinate) {
-        return this.getCartesianDistance(coordinate) < TOLERANCE;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (o == null)
-            return false; 
-        if (!(o instanceof Coordinate)) {
-            return false;
-        }
-        // Returns true even if they are different classes
-        // as long as they are very near and both implementing the interface.
-        return this.isEqual((Coordinate) o);
-    }
-
-    @Override
     public int hashCode() {
         String pattern = "0.0000";  // somehow derive it from TOLERANCE?
         DecimalFormat df = new DecimalFormat(pattern);
