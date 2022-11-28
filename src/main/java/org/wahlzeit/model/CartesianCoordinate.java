@@ -113,18 +113,8 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
     @Override
     public double getCentralAngle(Coordinate coordinate) {
-        // class invariant assertion
-        this.assertClassInvariants();
-        SphericCoordinate other = coordinate.asSphericCoordinate();
-
-        // no pre conditions as no arguments
-        double centralAngle = other.getCentralAngle(this);  // delegate to other class
-        // no post conditions by contract
-
-        // class invariant assertion
-        this.assertClassInvariants();
-        
-        return centralAngle;
+        SphericCoordinate this_one = this.asSphericCoordinate();  // callee assures object state
+        return this_one.getCentralAngle(coordinate); // delegation 
     }
     
     @Override
