@@ -43,6 +43,13 @@ public class LocationTest {
         location.photo = new Photo();
         assertNotNull(location.photo);
     }
+	/**
+	 * 
+	 */
+    @Test
+    public void testCoordinateGettersAndSetters() {
+        // TODO
+    }
     
 }
 
