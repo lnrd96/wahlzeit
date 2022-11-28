@@ -17,10 +17,8 @@ public class SphericCoordinate extends AbstractCoordinate {
         this.phi = phi;
         this.theta = theta;
         this.radius = radius;
-        checkSphericalValueRange();
+        assertClassInvariance();
     }
-
-    public SphericCoordinate() { }
 
     /**
      * Getters and Setters
@@ -31,7 +29,6 @@ public class SphericCoordinate extends AbstractCoordinate {
 
     public void setPhi(double phi) {
         this.phi = phi;
-        checkSphericalValueRange();
     }
 
     public double getTheta() {
@@ -40,7 +37,6 @@ public class SphericCoordinate extends AbstractCoordinate {
 
     public void setTheta(double theta) {
         this.theta = theta;
-        checkSphericalValueRange();
     }
 
     public double getRadius() {
@@ -49,7 +45,6 @@ public class SphericCoordinate extends AbstractCoordinate {
 
     public void setRadius(double radius) {
         this.radius = radius;
-        checkSphericalValueRange();
     }
     
     /**
@@ -57,6 +52,19 @@ public class SphericCoordinate extends AbstractCoordinate {
      */
     @Override
     public CartesianCoordinate asCartesianCoordinate() {
+        // class invariant assertion
+        this.assertClassInvariance();
+        
+        // no pre conditions, bc no arguments to function call
+        CartesianCoordinate cartesianCoordinate = doAsCartesianCoordinate(); 
+        
+        // class invariant assertion
+        this.assertClassInvariance();
+
+        return cartesianCoordinate;
+    }
+    
+    protected CartesianCoordinate doAsCartesianCoordinate() {
         double x = this.radius * Math.sin(this.phi) * Math.cos(this.theta);
         double y = this.radius * Math.sin(this.phi) * Math.sin(this.theta);
         double z = this.radius * Math.cos(this.phi);
@@ -65,6 +73,7 @@ public class SphericCoordinate extends AbstractCoordinate {
     
     @Override
     public SphericCoordinate asSphericCoordinate() {
+        this.assertClassInvariance();
         return this;
     }
 
@@ -73,14 +82,34 @@ public class SphericCoordinate extends AbstractCoordinate {
      */
     @Override
     public double getCartesianDistance(Coordinate coordinate) {
+        this.assertClassInvariance();
         CartesianCoordinate this_one = this.asCartesianCoordinate();
         CartesianCoordinate other = coordinate.asCartesianCoordinate();
+        this.assertClassInvariance();
         return this_one.getCartesianDistance(other);
     }
 
     @Override
     public double getCentralAngle(Coordinate coordinate) {
         SphericCoordinate other = coordinate.asSphericCoordinate();
+        
+        // class invariant assertion
+        other.assertClassInvariance();
+        this.assertClassInvariance();
+
+        
+        // no pre conditions
+        double angle = doGetCentralAngle(other);
+        assert angle >= 0.0 && angle <= Math.PI;  // post condition
+        
+        // class invariant assertion
+        other.assertClassInvariance();
+        this.assertClassInvariance();
+
+        return angle;
+    }
+    
+    public double doGetCentralAngle(SphericCoordinate other) {
         double phi_1 = this.getPhi();
         double phi_2 = other.getPhi();
         double theta_1 = this.getTheta();  // longitude $\lambda \in [-180, 180]$ degree
@@ -97,15 +126,17 @@ public class SphericCoordinate extends AbstractCoordinate {
         );
     }
     
+
     /**
-     * Helper methods
+     * class invariant assertion functions
      */
-    private void checkSphericalValueRange() {
-        if (Math.abs(this.radius - 6300) < TOLERANCE * 100)
+    @Override
+    protected void assertClassInvariance() {
+        if (Math.abs(this.radius - WORLD_RADIUS_KM) > TOLERANCE * 100)
             System.out.print("Only dog photos taken on planet earth are allowed for animal right reasons.");
         if (this.theta < 0.0 || this.theta > 180.0 || this.radius < 0.0 || this.phi < 0.0 || this.phi > 360.0)
             System.out.print("Invalid value range.");
-            // TODO: Throw exception or do sth else?
+            // TODO: Throw exception or do sth else? -> in next homeowrk.
             // Problematic because the throws declaration will pull up very far in wahlzeit.
     }
     
