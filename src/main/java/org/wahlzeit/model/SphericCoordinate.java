@@ -132,6 +132,9 @@ public class SphericCoordinate extends AbstractCoordinate {
      */
     @Override
     protected void assertClassInvariance() {
+        if (Double.isNaN(theta) || Double.isNaN(radius) || Double.isNaN(phi)){
+            System.out.print("Invalid object state!");
+        }
         if (Math.abs(this.radius - WORLD_RADIUS_KM) > TOLERANCE * 100)
             System.out.print("Only dog photos taken on planet earth are allowed for animal right reasons.");
         if (this.theta < 0.0 || this.theta > 180.0 || this.radius < 0.0 || this.phi < 0.0 || this.phi > 360.0)
