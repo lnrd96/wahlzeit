@@ -8,16 +8,19 @@ public abstract class AbstractCoordinate implements Coordinate{
     public abstract SphericCoordinate asSphericCoordinate();
     public abstract double getCartesianDistance(Coordinate coordinate);
     public abstract double getCentralAngle(Coordinate coordinate);
-    public static final double TOLERANCE = 0.00001;  // for isEqual()
-    public static final double WORLD_RADIUS_KM = 6371;  // for sanity check
+    protected abstract void assertClassInvariance();
     
     /**
      * Common methods / general concepts
      */
 
-    @Override
+    
+     @Override
     public boolean isEqual(Coordinate coordinate) {
-        return this.getCartesianDistance(coordinate) < TOLERANCE;
+        this.assertClassInvariance();
+        boolean equal = this.getCartesianDistance(coordinate) < TOLERANCE;
+        this.assertClassInvariance();
+        return equal;
     }
 
     public boolean equals(Object o) {
@@ -35,6 +38,9 @@ public abstract class AbstractCoordinate implements Coordinate{
 
     @Override
     public int hashCode() {
-        return this.asCartesianCoordinate().hashCode();
+        this.assertClassInvariance();
+        int _hashCode = this.asCartesianCoordinate().hashCode();
+        this.assertClassInvariance();
+        return _hashCode;
     }
 }
