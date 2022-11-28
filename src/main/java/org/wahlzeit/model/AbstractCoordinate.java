@@ -8,7 +8,7 @@ public abstract class AbstractCoordinate implements Coordinate{
     public abstract SphericCoordinate asSphericCoordinate();
     public abstract double getCartesianDistance(Coordinate coordinate);
     public abstract double getCentralAngle(Coordinate coordinate);
-    protected abstract void assertClassInvariance();
+    protected abstract void assertClassInvariants();
     
     /**
      * Common methods / general concepts
@@ -17,9 +17,9 @@ public abstract class AbstractCoordinate implements Coordinate{
     
      @Override
     public boolean isEqual(Coordinate coordinate) {
-        this.assertClassInvariance();
+        this.assertClassInvariants();
         boolean equal = this.getCartesianDistance(coordinate) < TOLERANCE;
-        this.assertClassInvariance();
+        this.assertClassInvariants();
         return equal;
     }
 
@@ -38,9 +38,9 @@ public abstract class AbstractCoordinate implements Coordinate{
 
     @Override
     public int hashCode() {
-        this.assertClassInvariance();
+        this.assertClassInvariants();
         int _hashCode = this.asCartesianCoordinate().hashCode();
-        this.assertClassInvariance();
+        this.assertClassInvariants();
         return _hashCode;
     }
 }

@@ -20,7 +20,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
         this.x = x;
         this.y = y;
         this.z = z;
-        this.assertClassInvariance();
+        this.assertClassInvariants();
     }
 
     /**
@@ -52,7 +52,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
     @Override
     public CartesianCoordinate asCartesianCoordinate() {
-        this.assertClassInvariance();
+        this.assertClassInvariants();
         return this;
     }
 
@@ -63,16 +63,16 @@ public class CartesianCoordinate extends AbstractCoordinate {
         CartesianCoordinate other = coordinate.asCartesianCoordinate();
         
         // class invariant assertion
-        this.assertClassInvariance();
-        other.assertClassInvariance();
+        this.assertClassInvariants();
+        other.assertClassInvariants();
         
         // no precondition
         double distance = doGetCartesianDistance(other);
-        assert distance >= 0.0;  // post condition
+        assert !Double.isNaN(distance) && distance >= 0.0 && distance <= WORLD_PERIMETER_KM;  // post condition
 
         // class invariant assertion
-        this.assertClassInvariance();
-        other.assertClassInvariance();
+        this.assertClassInvariants();
+        other.assertClassInvariants();
         
         return distance;
     }
@@ -87,12 +87,14 @@ public class CartesianCoordinate extends AbstractCoordinate {
     @Override
     public SphericCoordinate asSphericCoordinate() {
         // class invariant assertion
-        this.assertClassInvariance();
+        this.assertClassInvariants();
         
-        SphericCoordinate converted = doAsSphericCoordinate();
-        
+        // no pre conditions
+        SphericCoordinate converted = doAsSphericCoordinate();  
+        // no post conditions
+
         // class invariant assertion
-        this.assertClassInvariance();
+        this.assertClassInvariants();
 
         return converted;
     }
@@ -106,21 +108,21 @@ public class CartesianCoordinate extends AbstractCoordinate {
             theta = Math.atan(y / 0.000000001);
         }
         double phi = Math.atan(Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)) / z);
-        return new SphericCoordinate(phi, theta, radius);
+        return new SphericCoordinate(phi, theta, radius);  // object state is guaranteed by other class
     }
 
     @Override
     public double getCentralAngle(Coordinate coordinate) {
         // class invariant assertion
-        this.assertClassInvariance();
+        this.assertClassInvariants();
         SphericCoordinate other = coordinate.asSphericCoordinate();
 
-        // no pre conditions
+        // no pre conditions as no arguments
         double centralAngle = other.getCentralAngle(this);  // delegate to other class
-        assert centralAngle >= 0.0;  // post condition
+        // no post conditions by contract
 
         // class invariant assertion
-        this.assertClassInvariance();
+        this.assertClassInvariants();
         
         return centralAngle;
     }
@@ -129,7 +131,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
     public int hashCode() {
        
         // class invariant assertion
-        this.assertClassInvariance();
+        this.assertClassInvariants();
         
         String pattern = "0.0000";  // somehow derive it from TOLERANCE?
         DecimalFormat df = new DecimalFormat(pattern);
@@ -140,7 +142,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
         int hashValue = Objects.hash(rounded_x, rounded_y, rounded_z);
         
         // class invariant assertion
-        this.assertClassInvariance();
+        this.assertClassInvariants();
 
         return hashValue;
     }
@@ -149,10 +151,13 @@ public class CartesianCoordinate extends AbstractCoordinate {
      * class invariant assertion functions
      */
     @Override
-    protected void assertClassInvariance() {
+    protected void assertClassInvariants() {
         if (Math.abs(Math.sqrt(Math.sqrt(x) + Math.sqrt(y) + Math.sqrt(z)) - WORLD_RADIUS_KM) < TOLERANCE * 100) {
             System.out.print("Only dog photos taken on planet earth are allowed for animal right reasons.");
             // throw dedicated exception from next homework on.
+        }
+        if (Double.isNaN(x) || Double.isNaN(y) || Double.isNaN(z)){
+            System.out.print("Invalid object state!");
         }
     }
 

@@ -17,7 +17,7 @@ public class SphericCoordinate extends AbstractCoordinate {
         this.phi = phi;
         this.theta = theta;
         this.radius = radius;
-        assertClassInvariance();
+        assertClassInvariants();
     }
 
     /**
@@ -53,13 +53,13 @@ public class SphericCoordinate extends AbstractCoordinate {
     @Override
     public CartesianCoordinate asCartesianCoordinate() {
         // class invariant assertion
-        this.assertClassInvariance();
+        this.assertClassInvariants();
         
         // no pre conditions, bc no arguments to function call
         CartesianCoordinate cartesianCoordinate = doAsCartesianCoordinate(); 
         
         // class invariant assertion
-        this.assertClassInvariance();
+        this.assertClassInvariants();
 
         return cartesianCoordinate;
     }
@@ -68,12 +68,12 @@ public class SphericCoordinate extends AbstractCoordinate {
         double x = this.radius * Math.sin(this.phi) * Math.cos(this.theta);
         double y = this.radius * Math.sin(this.phi) * Math.sin(this.theta);
         double z = this.radius * Math.cos(this.phi);
-        return new CartesianCoordinate(x, y, z);
+        return new CartesianCoordinate(x, y, z);  // object state guaranteed by contract
     }
     
     @Override
     public SphericCoordinate asSphericCoordinate() {
-        this.assertClassInvariance();
+        this.assertClassInvariants();
         return this;
     }
 
@@ -82,10 +82,10 @@ public class SphericCoordinate extends AbstractCoordinate {
      */
     @Override
     public double getCartesianDistance(Coordinate coordinate) {
-        this.assertClassInvariance();
+        this.assertClassInvariants();
         CartesianCoordinate this_one = this.asCartesianCoordinate();
         CartesianCoordinate other = coordinate.asCartesianCoordinate();
-        this.assertClassInvariance();
+        this.assertClassInvariants();
         return this_one.getCartesianDistance(other);
     }
 
@@ -94,17 +94,17 @@ public class SphericCoordinate extends AbstractCoordinate {
         SphericCoordinate other = coordinate.asSphericCoordinate();
         
         // class invariant assertion
-        other.assertClassInvariance();
-        this.assertClassInvariance();
+        other.assertClassInvariants();
+        this.assertClassInvariants();
 
         
         // no pre conditions
         double angle = doGetCentralAngle(other);
-        assert angle >= 0.0 && angle <= Math.PI;  // post condition
+        assert !Double.isNaN(angle) && angle >= 0.0 && angle <= Math.PI;  // post condition
         
         // class invariant assertion
-        other.assertClassInvariance();
-        this.assertClassInvariance();
+        other.assertClassInvariants();
+        this.assertClassInvariants();
 
         return angle;
     }
@@ -131,7 +131,7 @@ public class SphericCoordinate extends AbstractCoordinate {
      * class invariant assertion functions
      */
     @Override
-    protected void assertClassInvariance() {
+    protected void assertClassInvariants() {
         if (Double.isNaN(theta) || Double.isNaN(radius) || Double.isNaN(phi)){
             System.out.print("Invalid object state!");
         }
