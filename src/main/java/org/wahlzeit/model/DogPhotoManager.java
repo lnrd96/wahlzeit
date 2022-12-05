@@ -38,6 +38,9 @@ public class DogPhotoManager extends PhotoManager {
      * @override
 	 */
 	protected DogPhoto doGetPhotoFromId(PhotoId id) {
+		if (id == null){  // pre condition for HashMap, fail early with meaningfull error message.
+			throw new NullPointerException("Can not get dog photo as PhotoId is null.");
+		}
 		return photoCache.get(id);
 	}
 	
@@ -46,11 +49,11 @@ public class DogPhotoManager extends PhotoManager {
 	 */
 	public DogPhoto getPhotoFromId(PhotoId id) {
 		if (id.isNullId()) {
-			return null;
+			throw new IllegalArgumentException("Can not get dog photo as passed PhotoId is set to 0-id.");
 		}
         
         // cache hit
-		DogPhoto result = doGetPhotoFromId(id);
+		DogPhoto result = doGetPhotoFromId(id);  // checked by callee
 		
         // cache miss -> query db
 		if (result == null) {
@@ -72,6 +75,9 @@ public class DogPhotoManager extends PhotoManager {
 	 * @override
 	 */
 	protected DogPhoto createObject(ResultSet rset) throws SQLException {
+		if (rset == null){
+			throw new NullPointerException("DogPhoto can not be created from ResultSet as it is null.");
+		}
 		return DogPhotoFactory.getInstance().createPhoto(rset);
 	}
 	
@@ -90,6 +96,9 @@ public class DogPhotoManager extends PhotoManager {
 	 * Load all persisted photos. Executed when Wahlzeit is restarted.
 	 */
 	public void addPhoto(DogPhoto photo) {
+		if (photo == null){
+			throw new NullPointerException("Can not add photo as it is null.");
+		}
 		PhotoId id = photo.getId();
 		assertIsNewPhoto(id);
 		doAddPhoto(photo);
@@ -107,6 +116,9 @@ public class DogPhotoManager extends PhotoManager {
 	 * @methodtype command
 	 */
 	public void loadDogPhotos(Collection<DogPhoto> result) {
+		if (result == null) {
+			throw new NullPointerException("Can not load dog photos as Collection is null.");
+		}
 		try {
 			PreparedStatement stmt = getReadingStatement("SELECT * FROM photos");
 			readObjects(result, stmt);
@@ -129,6 +141,9 @@ public class DogPhotoManager extends PhotoManager {
 	 * 
 	 */
 	public void savePhoto(DogPhoto photo) {
+		if (photo == null) {
+			throw new NullPointerException("Can not save dog photo as it is null.");
+		}
 		try {
 			PreparedStatement stmt = getUpdatingStatement("SELECT * FROM photos WHERE id = ?");
 			updateObject(photo, stmt);
@@ -157,6 +172,9 @@ public class DogPhotoManager extends PhotoManager {
 	 * the Datastore, it is simply not persisted.
 	 */
 	public Set<DogPhoto> findDogPhotosByOwner(String ownerName) {
+		if (ownerName == null) {
+			throw new NullPointerException("Can not look for photos as ownerName is null.");
+		}
 		Set<DogPhoto> result = new HashSet<DogPhoto>();
 		try {
 			PreparedStatement stmt = getReadingStatement("SELECT * FROM photos WHERE owner_name = ? AND photo_id IS NOT NULL");
@@ -176,6 +194,9 @@ public class DogPhotoManager extends PhotoManager {
 	 * 
 	 */
 	public DogPhoto getVisiblePhoto(PhotoFilter filter) {
+		if (filter == null) {
+			throw new NullPointerException("Can not look for photos as filter is null.");
+		}
 		DogPhoto result = getPhotoFromFilter(filter);
 		
 		if(result == null) {
@@ -191,6 +212,9 @@ public class DogPhotoManager extends PhotoManager {
 	 * 
 	 */
 	protected DogPhoto getPhotoFromFilter(PhotoFilter filter) {
+		if (filter == null) {
+			throw new NullPointerException("Can not look for photos filter is null.");
+		}
 		PhotoId id = filter.getRandomDisplayablePhotoId();
 		DogPhoto result = getPhotoFromId(id);
 		while((result != null) && !result.isVisible()) {
@@ -208,7 +232,7 @@ public class DogPhotoManager extends PhotoManager {
 	/**
 	 * 
 	 */
-	public DogPhoto createPhoto(File file) throws Exception {
+	public DogPhoto createPhoto(File file) throws Exception {  // ok, throw them ¯\_(ツ)_/¯
 		PhotoId id = PhotoId.getNextId();
 		DogPhoto result = (DogPhoto) PhotoUtil.createPhoto(file, id);
 		addPhoto(result);
