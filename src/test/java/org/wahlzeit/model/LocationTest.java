@@ -13,7 +13,7 @@ public class LocationTest {
 
     @Before
     public void initLocation() {
-        location = new Location(new CartesianCoordinate(1.0, 1.0, 1.0));
+        location = new Location(new CartesianCoordinate(0.0, 0.0, Coordinate.WORLD_RADIUS_KM));
     }
 
     @Test
@@ -25,7 +25,7 @@ public class LocationTest {
 	 */
     @Test
     public void testConstructor2() {
-        Location l2 = new Location(new CartesianCoordinate(1.0, 1.0, 1.0), new Photo());
+        Location l2 = new Location(new CartesianCoordinate(0.0, 0.0, Coordinate.WORLD_RADIUS_KM), new Photo());
         assertNotNull(l2);
     }
 	/**
