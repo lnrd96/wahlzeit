@@ -17,6 +17,7 @@ public abstract class AbstractCoordinate implements Coordinate{
     
      @Override
     public boolean isEqual(Coordinate coordinate) {
+        assert coordinate != null;  // pre condition       
         this.assertClassInvariants();
         boolean equal = this.getCartesianDistance(coordinate) < TOLERANCE;
         this.assertClassInvariants();

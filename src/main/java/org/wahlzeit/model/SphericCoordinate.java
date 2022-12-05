@@ -82,12 +82,14 @@ public class SphericCoordinate extends AbstractCoordinate {
      */
     @Override
     public double getCartesianDistance(Coordinate coordinate) {
+        assert coordinate != null;  // pre condition       
         CartesianCoordinate this_one = this.asCartesianCoordinate();  // callee assures object state
         return this_one.getCartesianDistance(coordinate);  // delegation
     }
 
     @Override
     public double getCentralAngle(Coordinate coordinate) {
+        assert coordinate != null;  // pre condition       
         SphericCoordinate other = coordinate.asSphericCoordinate();
         
         // class invariant assertion

@@ -59,7 +59,9 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
     @Override
     public double getCartesianDistance(Coordinate coordinate) {
-        
+       
+        assert coordinate != null;  // pre condition       
+
         CartesianCoordinate other = coordinate.asCartesianCoordinate();
         
         // class invariant assertion
@@ -113,6 +115,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
     @Override
     public double getCentralAngle(Coordinate coordinate) {
+        assert coordinate != null;  // pre condition       
         SphericCoordinate this_one = this.asSphericCoordinate();  // callee assures object state
         return this_one.getCentralAngle(coordinate); // delegation 
     }
@@ -141,13 +144,13 @@ public class CartesianCoordinate extends AbstractCoordinate {
      * class invariant assertion functions
      */
     @Override
-    protected void assertClassInvariants() {
+    protected void assertClassInvariants() throws IllegalStateException {
         if (Math.abs(Math.sqrt(Math.sqrt(x) + Math.sqrt(y) + Math.sqrt(z)) - WORLD_RADIUS_KM) < TOLERANCE * 100) {
-            System.out.print("Only dog photos taken on planet earth are allowed for animal right reasons.");
+            throw new IllegalStateException("Only dog photos taken on planet earth are allowed for animal right reasons.");
             // throw dedicated exception from next homework on.
         }
         if (Double.isNaN(x) || Double.isNaN(y) || Double.isNaN(z)){
-            System.out.print("Invalid object state!");
+            throw new IllegalStateException("Invalid object state!");
         }
     }
 
