@@ -4,11 +4,21 @@ public abstract class AbstractCoordinate implements Coordinate{
     /**
      * Inheritance interface
      */
-    public abstract CartesianCoordinate asCartesianCoordinate();
-    public abstract SphericCoordinate asSphericCoordinate();
-    public abstract double getCartesianDistance(Coordinate coordinate);
-    public abstract double getCentralAngle(Coordinate coordinate);
-    protected abstract void assertClassInvariants();
+    public abstract CartesianCoordinate asCartesianCoordinate() throws IllegalStateException;
+    public abstract SphericCoordinate asSphericCoordinate() throws IllegalStateException;
+    public abstract double getCartesianDistance(Coordinate coordinate) throws IllegalStateException;
+    public abstract double getCentralAngle(Coordinate coordinate) throws IllegalStateException;
+    protected abstract void assertClassInvariants() throws IllegalStateException;
+    
+    /**
+     * Common ressources
+     */
+    protected final String ERR_MSG_NOT_ON_EARTH = "Coordinate location not on earth surface! " +
+                                                  "Only dog photos taken on planet earth " +
+                                                  "are allowed for animal right reasons.";
+    protected final String ERR_MSG_ATTR_NAN = "Invalid object state! At least one critical attribute is NaN.";
+    protected final String ERR_MSG_ATTR_INVALID = "Invalid object state! At least one critical attribute " +
+                                          "is has an invalid numerical value.";
     
     /**
      * Common methods / general concepts
@@ -16,7 +26,7 @@ public abstract class AbstractCoordinate implements Coordinate{
 
     
      @Override
-    public boolean isEqual(Coordinate coordinate) {
+    public boolean isEqual(Coordinate coordinate) throws IllegalStateException {
         assert coordinate != null;  // pre condition       
         this.assertClassInvariants();
         boolean equal = this.getCartesianDistance(coordinate) < TOLERANCE;
@@ -38,7 +48,7 @@ public abstract class AbstractCoordinate implements Coordinate{
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode() throws IllegalStateException {
         this.assertClassInvariants();
         int _hashCode = this.asCartesianCoordinate().hashCode();
         this.assertClassInvariants();

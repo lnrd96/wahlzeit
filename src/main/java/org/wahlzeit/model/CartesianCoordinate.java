@@ -16,11 +16,16 @@ public class CartesianCoordinate extends AbstractCoordinate {
     /**
      * Constructors
      */
-    public CartesianCoordinate(double x, double y, double z) {
+    public CartesianCoordinate(double x, double y, double z) throws IllegalArgumentException {
         this.x = x;
         this.y = y;
         this.z = z;
-        this.assertClassInvariants();
+        try {
+            this.assertClassInvariants();
+        } catch (IllegalStateException e) {
+            // convert error type for suitable user feedback
+            throw new IllegalArgumentException(e.getMessage()); 
+        }
     }
 
     /**
@@ -51,14 +56,14 @@ public class CartesianCoordinate extends AbstractCoordinate {
     }
 
     @Override
-    public CartesianCoordinate asCartesianCoordinate() {
+    public CartesianCoordinate asCartesianCoordinate() throws IllegalStateException {
         this.assertClassInvariants();
         return this;
     }
 
 
     @Override
-    public double getCartesianDistance(Coordinate coordinate) {
+    public double getCartesianDistance(Coordinate coordinate) throws IllegalStateException {
        
         assert coordinate != null;  // pre condition       
 
@@ -87,7 +92,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
 
     @Override
-    public SphericCoordinate asSphericCoordinate() {
+    public SphericCoordinate asSphericCoordinate() throws IllegalStateException {
         // class invariant assertion
         this.assertClassInvariants();
         
@@ -121,7 +126,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
     }
     
     @Override
-    public int hashCode() {
+    public int hashCode() throws IllegalStateException {
        
         // class invariant assertion
         this.assertClassInvariants();
@@ -146,11 +151,11 @@ public class CartesianCoordinate extends AbstractCoordinate {
     @Override
     protected void assertClassInvariants() throws IllegalStateException {
         if (Math.abs(Math.sqrt(Math.sqrt(x) + Math.sqrt(y) + Math.sqrt(z)) - WORLD_RADIUS_KM) < TOLERANCE * 100) {
-            throw new IllegalStateException("Only dog photos taken on planet earth are allowed for animal right reasons.");
+            throw new IllegalStateException(ERR_MSG_NOT_ON_EARTH);
             // throw dedicated exception from next homework on.
         }
         if (Double.isNaN(x) || Double.isNaN(y) || Double.isNaN(z)){
-            throw new IllegalStateException("Invalid object state!");
+            throw new IllegalStateException(ERR_MSG_ATTR_NAN);
         }
     }
 

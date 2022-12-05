@@ -13,11 +13,16 @@ public class SphericCoordinate extends AbstractCoordinate {
     /**
      * Constructors
      */
-    public SphericCoordinate(double phi, double theta, double radius) {
+    public SphericCoordinate(double phi, double theta, double radius) throws IllegalArgumentException {
         this.phi = phi;
         this.theta = theta;
         this.radius = radius;
-        assertClassInvariants();
+        try {
+            assertClassInvariants();
+        } catch (IllegalStateException e) {
+            // convert error type for suitable user feedback
+            throw new IllegalArgumentException(e.getMessage()); 
+        }
     }
 
     /**
@@ -51,7 +56,7 @@ public class SphericCoordinate extends AbstractCoordinate {
      * Conversion methods
      */
     @Override
-    public CartesianCoordinate asCartesianCoordinate() {
+    public CartesianCoordinate asCartesianCoordinate() throws IllegalStateException {
         // class invariant assertion
         this.assertClassInvariants();
         
@@ -72,7 +77,7 @@ public class SphericCoordinate extends AbstractCoordinate {
     }
     
     @Override
-    public SphericCoordinate asSphericCoordinate() {
+    public SphericCoordinate asSphericCoordinate() throws IllegalStateException {
         this.assertClassInvariants();
         return this;
     }
@@ -81,14 +86,14 @@ public class SphericCoordinate extends AbstractCoordinate {
      * Distance calculation
      */
     @Override
-    public double getCartesianDistance(Coordinate coordinate) {
+    public double getCartesianDistance(Coordinate coordinate) throws IllegalStateException {
         assert coordinate != null;  // pre condition       
         CartesianCoordinate this_one = this.asCartesianCoordinate();  // callee assures object state
         return this_one.getCartesianDistance(coordinate);  // delegation
     }
 
     @Override
-    public double getCentralAngle(Coordinate coordinate) {
+    public double getCentralAngle(Coordinate coordinate) throws IllegalStateException {
         assert coordinate != null;  // pre condition       
         SphericCoordinate other = coordinate.asSphericCoordinate();
         
@@ -130,16 +135,16 @@ public class SphericCoordinate extends AbstractCoordinate {
      * class invariant assertion functions
      */
     @Override
-    protected void assertClassInvariants() {
+    protected void assertClassInvariants() throws IllegalStateException {
         if (Double.isNaN(theta) || Double.isNaN(radius) || Double.isNaN(phi)){
-            System.out.print("Invalid object state!");
+            throw new IllegalStateException(ERR_MSG_ATTR_NAN);
         }
+
         if (Math.abs(this.radius - WORLD_RADIUS_KM) > TOLERANCE * 100)
-            System.out.print("Only dog photos taken on planet earth are allowed for animal right reasons.");
+            throw new IllegalStateException(ERR_MSG_NOT_ON_EARTH);
+
         if (this.theta < 0.0 || this.theta > 180.0 || this.radius < 0.0 || this.phi < 0.0 || this.phi > 360.0)
-            System.out.print("Invalid value range.");
-            // TODO: Throw exception or do sth else? -> in next homeowrk.
-            // Problematic because the throws declaration will pull up very far in wahlzeit.
+            throw new IllegalStateException(ERR_MSG_ATTR_INVALID);
     }
     
 
