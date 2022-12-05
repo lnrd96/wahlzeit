@@ -52,13 +52,19 @@ public class DogPhotoFactory extends PhotoFactory {
 	 * @override
 	 */
 	public DogPhoto createPhoto(PhotoId id) {
+		if (id == null) {
+			throw new NullPointerException("Dog Photo can not be created, since PhotoID is null.");
+		}
 		return new DogPhoto(id);
 	}
 	
 	/**
 	 * @override
 	 */
-	public DogPhoto createPhoto(ResultSet rs) throws SQLException {
+	public DogPhoto createPhoto(ResultSet rs) throws SQLException , IllegalStateException{
+		if (rs == null) {
+			throw new NullPointerException("Dog Photo can not be created, since ResultSet is null.");
+		}
 		return new DogPhoto(rs);
 	}
 
