@@ -143,7 +143,7 @@ public class SphericCoordinate extends AbstractCoordinate {
             throw new IllegalStateException(ERR_MSG_ATTR_NAN);
         }
 
-        if (Math.abs(this.radius - WORLD_RADIUS_KM) > TOLERANCE * 100)
+        if (Math.abs(this.radius - WORLD_RADIUS_KM) > TOLERANCE * 100000)
             throw new IllegalStateException(ERR_MSG_NOT_ON_EARTH);
 
         if (this.theta < 0.0 || this.theta > 180.0 || this.radius < 0.0 || this.phi < 0.0 || this.phi > 360.0)

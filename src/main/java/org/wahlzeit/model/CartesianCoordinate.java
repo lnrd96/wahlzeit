@@ -155,7 +155,8 @@ public class CartesianCoordinate extends AbstractCoordinate {
      */
     @Override
     protected void assertClassInvariants() throws IllegalStateException {
-        if (Math.abs(Math.sqrt(Math.sqrt(x) + Math.sqrt(y) + Math.sqrt(z)) - WORLD_RADIUS_KM) < TOLERANCE * 100) {
+        double radius = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
+        if (Math.abs(radius - WORLD_RADIUS_KM) > TOLERANCE * 100000) {
             throw new IllegalStateException(ERR_MSG_NOT_ON_EARTH);
             // throw dedicated exception from next homework on.
         }
