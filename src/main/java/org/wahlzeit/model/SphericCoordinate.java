@@ -86,14 +86,14 @@ public class SphericCoordinate extends AbstractCoordinate {
      * Distance calculation
      */
     @Override
-    public double getCartesianDistance(Coordinate coordinate) throws IllegalStateException {
+    public double getCartesianDistance(Coordinate coordinate) throws IllegalStateException, ArithmeticException {
         assert coordinate != null;  // pre condition       
         CartesianCoordinate this_one = this.asCartesianCoordinate();  // callee assures object state
         return this_one.getCartesianDistance(coordinate);  // delegation
     }
 
     @Override
-    public double getCentralAngle(Coordinate coordinate) throws IllegalStateException {
+    public double getCentralAngle(Coordinate coordinate) throws IllegalStateException, ArithmeticException {
         assert coordinate != null;  // pre condition       
         SphericCoordinate other = coordinate.asSphericCoordinate();
         
@@ -113,21 +113,24 @@ public class SphericCoordinate extends AbstractCoordinate {
         return angle;
     }
     
-    public double doGetCentralAngle(SphericCoordinate other) {
+    public double doGetCentralAngle(SphericCoordinate other) throws ArithmeticException {
         double phi_1 = this.getPhi();
         double phi_2 = other.getPhi();
         double theta_1 = this.getTheta();  // longitude $\lambda \in [-180, 180]$ degree
         double theta_2 = other.getTheta();
         double delta_lambda = Math.abs(theta_1 - theta_2);
         double delta_phi = Math.abs(phi_1 - theta_2);
-        return 2 * Math.asin(
-            Math.sqrt(
+        double argument = Math.sqrt(
                 Math.pow(Math.sin((delta_phi / 2)), 2) + 
                 (1 - Math.pow(Math.sin((delta_phi / 2)), 2) - 
                 Math.pow(Math.sin((phi_1 + phi_2) / 2), 2)) *
                 Math.pow(Math.sin(delta_lambda / 2), 2)
-            )
-        );
+            );
+        // pre condition for Math.asin
+        if (Double.isNaN(argument)) {
+            throw new ArithmeticException("Central angle computation failed.");
+        }
+        return 2 * Math.asin(argument);
     }
     
 

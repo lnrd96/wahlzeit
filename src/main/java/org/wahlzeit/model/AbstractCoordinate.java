@@ -6,8 +6,8 @@ public abstract class AbstractCoordinate implements Coordinate{
      */
     public abstract CartesianCoordinate asCartesianCoordinate() throws IllegalStateException;
     public abstract SphericCoordinate asSphericCoordinate() throws IllegalStateException;
-    public abstract double getCartesianDistance(Coordinate coordinate) throws IllegalStateException;
-    public abstract double getCentralAngle(Coordinate coordinate) throws IllegalStateException;
+    public abstract double getCartesianDistance(Coordinate coordinate) throws IllegalStateException, ArithmeticException;
+    public abstract double getCentralAngle(Coordinate coordinate) throws IllegalStateException, ArithmeticException;
     protected abstract void assertClassInvariants() throws IllegalStateException;
     
     /**
@@ -18,7 +18,7 @@ public abstract class AbstractCoordinate implements Coordinate{
                                                   "are allowed for animal right reasons.";
     protected final String ERR_MSG_ATTR_NAN = "Invalid object state! At least one critical attribute is NaN.";
     protected final String ERR_MSG_ATTR_INVALID = "Invalid object state! At least one critical attribute " +
-                                          "is has an invalid numerical value.";
+                                                  "is has an invalid numerical value.";
     
     /**
      * Common methods / general concepts

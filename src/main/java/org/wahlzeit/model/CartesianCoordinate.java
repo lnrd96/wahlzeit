@@ -63,7 +63,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
 
     @Override
-    public double getCartesianDistance(Coordinate coordinate) throws IllegalStateException {
+    public double getCartesianDistance(Coordinate coordinate) throws IllegalStateException, ArithmeticException {
        
         assert coordinate != null;  // pre condition       
 
@@ -84,10 +84,15 @@ public class CartesianCoordinate extends AbstractCoordinate {
         return distance;
     }
     
-    protected double doGetCartesianDistance(CartesianCoordinate other) {
-        return  Math.sqrt(Math.pow(this.getX() - other.getX(), 2)
+    protected double doGetCartesianDistance(CartesianCoordinate other) throws ArithmeticException {
+        double argument = Math.pow(this.getX() - other.getX(), 2)
                         + Math.pow(this.getY() - other.getY(), 2)
-                        + Math.pow(this.getZ() - other.getZ(), 2));
+                        + Math.pow(this.getZ() - other.getZ(), 2);
+        // pre condition Math.sqrt
+        if (Double.isNaN(argument) || Double.isInfinite(argument)) {
+            throw new ArithmeticException("Cartesian distance calculation failed.");
+        }
+        return  Math.sqrt(argument);
     }
 
 
@@ -119,7 +124,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
     }
 
     @Override
-    public double getCentralAngle(Coordinate coordinate) {
+    public double getCentralAngle(Coordinate coordinate) throws IllegalStateException, ArithmeticException {
         assert coordinate != null;  // pre condition       
         SphericCoordinate this_one = this.asSphericCoordinate();  // callee assures object state
         return this_one.getCentralAngle(coordinate); // delegation 
