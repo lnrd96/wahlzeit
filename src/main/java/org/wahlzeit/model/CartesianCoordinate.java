@@ -5,13 +5,13 @@ import java.util.Objects;
 
 
 
-public class CartesianCoordinate extends AbstractCoordinate {
+public final class CartesianCoordinate extends AbstractCoordinate {
     /**
      * Attributes
      */
-    private double x;
-    private double y;
-    private double z;
+    private final double x;
+    private final double y;
+    private final double z;
     
     /**
      * Constructors
@@ -35,24 +35,24 @@ public class CartesianCoordinate extends AbstractCoordinate {
         return this.x;
     }
 
-    public void setX(double x) {
-        this.x = x;
+    public CartesianCoordinate setX(double x) {
+        return new CartesianCoordinate(x, this.y, this.z);
     }
 
     public double getY() {
         return this.y;
     }
 
-    public void setY(double y) {
-        this.y = y;
+    public CartesianCoordinate setY(double y) {
+        return new CartesianCoordinate(this.x, y, this.z);
     }
 
     public double getZ() {
         return this.z;
     }
 
-    public void setZ(double z) {
-        this.z = z;
+    public CartesianCoordinate setZ(double z) {
+        return new CartesianCoordinate(this.x, this.y, z);
     }
 
     @Override

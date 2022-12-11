@@ -2,13 +2,13 @@ package org.wahlzeit.model;
 import java.util.Objects;
 import static java.lang.Math.*;
 
-public class SphericCoordinate extends AbstractCoordinate {
+public final class SphericCoordinate extends AbstractCoordinate {
     /**
      * Attributes
      */
-    private double phi;
-    private double theta;
-    private double radius;
+    private final double phi;
+    private final double theta;
+    private final double radius;
     
     /**
      * Constructors
@@ -32,24 +32,24 @@ public class SphericCoordinate extends AbstractCoordinate {
         return this.phi;
     }
 
-    public void setPhi(double phi) {
-        this.phi = phi;
+    public SphericCoordinate setPhi(double phi) {
+        return new SphericCoordinate(phi, this.theta, this.radius);
     }
 
     public double getTheta() {
         return this.theta;
     }
 
-    public void setTheta(double theta) {
-        this.theta = theta;
+    public SphericCoordinate setTheta(double theta) {
+        return new SphericCoordinate(this.phi, theta, this.radius);
     }
 
     public double getRadius() {
         return this.radius;
     }
 
-    public void setRadius(double radius) {
-        this.radius = radius;
+    public SphericCoordinate setRadius(double radius) {
+        return new SphericCoordinate(this.phi, this.theta, radius);
     }
     
     /**
