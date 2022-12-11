@@ -2,6 +2,7 @@ package org.wahlzeit.model;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.wahlzeit.handlers.CoordinateHandler;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -12,6 +13,7 @@ public class CoordinateImplTest {
     private CartesianCoordinate cartesianCoordinate_this;
     private CartesianCoordinate cartesianCoordinate_other;
     private SphericCoordinate sphericCoordinate;
+    private CoordinateHandler handler;
 
 	@Before
 	public void initCoordinate() {
@@ -21,6 +23,7 @@ public class CoordinateImplTest {
 		cartesianCoordinate_this = new CartesianCoordinate(x, y, z);
 		cartesianCoordinate_other = new CartesianCoordinate(x, z, y);
         sphericCoordinate = new SphericCoordinate(1.0, 1.0, Coordinate.WORLD_RADIUS_KM);
+        handler = CoordinateHandler.getInstance();
 	}
 	
 	/**
@@ -43,24 +46,32 @@ public class CoordinateImplTest {
         assertEquals(0.0, coordinate3.getPhi(), 0.0001);
         assertEquals(0.1, coordinate3.getTheta(), 0.0001);
         assertEquals(Coordinate.WORLD_RADIUS_KM, coordinate3.getRadius(), 0.0001);
+	}
 	/**
 	 *
 	 */
-	}
     @Test
     public void testGetterAndSetter() {
-        cartesianCoordinate_this.setX(0.0);
-        cartesianCoordinate_this.setY(0.3);
-        cartesianCoordinate_this.setZ(0.6);
-        assertEquals(0.0, cartesianCoordinate_this.getX(), 0.0001);
-        assertEquals(0.3, cartesianCoordinate_this.getY(), 0.0001);
-        assertEquals(0.6, cartesianCoordinate_this.getZ(), 0.0001);
-        sphericCoordinate.setPhi(0.0);
-        sphericCoordinate.setTheta(0.3);
-        sphericCoordinate.setRadius(Coordinate.WORLD_RADIUS_KM);
-        assertEquals(0.0, sphericCoordinate.getPhi(), 0.0001);
-        assertEquals(0.3, sphericCoordinate.getTheta(), 0.0001);
+        CartesianCoordinate c1 = handler.getCartesianCoordinate(0.0, 0.1, Coordinate.WORLD_RADIUS_KM);
+        Coordinate c3 = handler.getCartesianCoordinate(0.0, 0.2, Coordinate.WORLD_RADIUS_KM);
+        Coordinate c2 = c1.setY(0.2);
+        assert c2 == c3;
+        SphericCoordinate s1 = new SphericCoordinate(0.0, 0.3, Coordinate.WORLD_RADIUS_KM);
+        assertEquals(0.0, s1.getPhi(), 0.0001);
+        assertEquals(0.3, s1.getTheta(), 0.0001);
         assertEquals(Coordinate.WORLD_RADIUS_KM, sphericCoordinate.getRadius(), 0.0001);
+    }
+	/**
+	 *
+	 */
+    @Test
+    public void testObjectSharing() {
+        Coordinate c1 = handler.getCartesianCoordinate(0.0, 0.1, Coordinate.WORLD_RADIUS_KM);
+        Coordinate c2 = handler.getCartesianCoordinate(0.0, 0.1, Coordinate.WORLD_RADIUS_KM);
+        assert c1 == c2;
+        c1 = handler.getCartesianCoordinate(0.0, 0.2, Coordinate.WORLD_RADIUS_KM);
+        c2 = handler.getCartesianCoordinate(0.0, 0.1, Coordinate.WORLD_RADIUS_KM);
+        assert c1 != c2;
     }
 	/**
 	 *
@@ -77,15 +88,12 @@ public class CoordinateImplTest {
         sphericCoordinate.setTheta(3.3);
 		Coordinate other = new SphericCoordinate(4.5, 7.7, Coordinate.WORLD_RADIUS_KM);
         double distance = sphericCoordinate.getCentralAngle(other);
-		assertEquals(distance, 1.926746, 0.00001);
+		assertEquals(0.564412881256, distance, 0.00001);
     }
     @ Test 
     public void testSphericalDistanceInverse(){
         double distance = cartesianCoordinate_this.getCentralAngle(cartesianCoordinate_this);
         assertNotNull(distance);
-        cartesianCoordinate_this.setX(1.3);
-        cartesianCoordinate_this.setY(2.3);
-        cartesianCoordinate_this.setZ(3.3);
     }
     @ Test 
     public void testGetCartesianDistanceInverse(){
@@ -126,16 +134,14 @@ public class CoordinateImplTest {
         
         double y = other.getY();
         double x = other.getX();
-		other.setX(y);
-		other.setY(x);
+        double z = cartesianCoordinate_this.getZ();
+        other = handler.getCartesianCoordinate(y, x, z);
 		assertFalse(cartesianCoordinate_this.isEqual(other));
         // assert hashcode is not equal if coordinates are equal
 		assertFalse(cartesianCoordinate_this.hashCode() == other.hashCode());
 
         
-        cartesianCoordinate_this.setX(2896.566953);
-        cartesianCoordinate_this.setY(4511.135748);
-        cartesianCoordinate_this.setZ(3442.265991);
+        cartesianCoordinate_this = handler.getCartesianCoordinate(2896.566953, 4511.135748, 3442.265991);
         int hash_1 = cartesianCoordinate_this.hashCode();
         assertTrue(cartesianCoordinate_this.isEqual(sphericCoordinate));
         
