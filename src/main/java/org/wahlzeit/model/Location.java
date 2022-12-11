@@ -5,6 +5,8 @@
 package org.wahlzeit.model;
 import org.wahlzeit.model.Coordinate;
 import org.wahlzeit.model.Photo;
+import org.wahlzeit.services.DataObject;
+import org.wahlzeit.handlers.CoordinateHandler;
 
 import java.sql.*;
 
@@ -20,25 +22,28 @@ public class Location {
 	 */
     public Coordinate coordinate;
     public Photo photo;
+	public CoordinateHandler coordinateHandler;
 
 	/**
 	 * 
 	 */
 	public Location(Coordinate coordinate) {
 		this.coordinate = coordinate;
+		this.coordinateHandler = CoordinateHandler.getInstance();
 	}
 	public Location(Coordinate coordinate, Photo photo) {
 		this.coordinate = coordinate;
 		this.photo = photo;
+		this.coordinateHandler = CoordinateHandler.getInstance();
 	}
 	/**
 	 * 
 	 */
-	public void setCartesianCoordinates(double x, double y, double z) {
-		coordinate = new CartesianCoordinate(x, y, z);
+	public void setCartesianCoordinate(double x, double y, double z) {
+		this.coordinate = coordinateHandler.getCartesianCoordinate(x, y, z);
 	}
-	public void setSphericCoordinates(double phi, double theta, double radius) {
-		coordinate = new SphericCoordinate(phi, theta, radius);
+	public void setSphericCoordinate(double phi, double theta, double radius) {
+		this.coordinate = coordinateHandler.getSphericCoordinate(phi, theta, radius);
 	}
 	public Map<String, Double> getCartesianCoordinates() {
 		Map<String, Double> coordinates = new HashMap<String, Double>();
@@ -69,11 +74,11 @@ public class Location {
 		double x = rset.getDouble("location_coordinate_x");
 		double y = rset.getDouble("location_coordinate_y");
 		double z = rset.getDouble("location_coordinate_z");
-		setCartesianCoordinates(x, y, z);
+		setCartesianCoordinate(x, y, z);
 		double phi = rset.getDouble("location_coordinate_phi");
 		double theta = rset.getDouble("location_coordinate_theta");
 		double radius = rset.getDouble("location_coordinate_radius");
-		setSphericCoordinates(phi, theta, radius);
+		setSphericCoordinate(phi, theta, radius);
 	}
 
 }
