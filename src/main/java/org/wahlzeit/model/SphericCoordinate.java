@@ -1,5 +1,8 @@
 package org.wahlzeit.model;
 import java.util.Objects;
+
+import org.wahlzeit.handlers.CoordinateHandler;
+
 import static java.lang.Math.*;
 
 public final class SphericCoordinate extends AbstractCoordinate {
@@ -9,6 +12,7 @@ public final class SphericCoordinate extends AbstractCoordinate {
     private final double phi;
     private final double theta;
     private final double radius;
+    private final CoordinateHandler handler;
     
     /**
      * Constructors
@@ -23,6 +27,7 @@ public final class SphericCoordinate extends AbstractCoordinate {
             // convert error type for suitable user feedback
             throw new IllegalArgumentException(e.getMessage()); 
         }
+        handler = CoordinateHandler.getInstance();
     }
 
     /**
@@ -33,7 +38,7 @@ public final class SphericCoordinate extends AbstractCoordinate {
     }
 
     public SphericCoordinate setPhi(double phi) {
-        return new SphericCoordinate(phi, this.theta, this.radius);
+        return handler.getSphericCoordinate(phi, this.theta, this.radius);
     }
 
     public double getTheta() {
@@ -41,7 +46,7 @@ public final class SphericCoordinate extends AbstractCoordinate {
     }
 
     public SphericCoordinate setTheta(double theta) {
-        return new SphericCoordinate(this.phi, theta, this.radius);
+        return handler.getSphericCoordinate(this.phi, theta, this.radius);
     }
 
     public double getRadius() {
@@ -49,7 +54,7 @@ public final class SphericCoordinate extends AbstractCoordinate {
     }
 
     public SphericCoordinate setRadius(double radius) {
-        return new SphericCoordinate(this.phi, this.theta, radius);
+        return handler.getSphericCoordinate(this.phi, this.theta, radius);
     }
     
     /**

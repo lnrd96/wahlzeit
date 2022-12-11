@@ -3,6 +3,8 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.Objects;
 
+import org.wahlzeit.handlers.CoordinateHandler;
+
 
 
 public final class CartesianCoordinate extends AbstractCoordinate {
@@ -12,6 +14,7 @@ public final class CartesianCoordinate extends AbstractCoordinate {
     private final double x;
     private final double y;
     private final double z;
+    private final CoordinateHandler handler;
     
     /**
      * Constructors
@@ -26,6 +29,7 @@ public final class CartesianCoordinate extends AbstractCoordinate {
             // convert error type for suitable user feedback
             throw new IllegalArgumentException(e.getMessage()); 
         }
+        handler = CoordinateHandler.getInstance();
     }
 
     /**
@@ -36,7 +40,7 @@ public final class CartesianCoordinate extends AbstractCoordinate {
     }
 
     public CartesianCoordinate setX(double x) {
-        return new CartesianCoordinate(x, this.y, this.z);
+        return handler.getCartesianCoordinate(x, this.y, this.z);
     }
 
     public double getY() {
@@ -44,7 +48,7 @@ public final class CartesianCoordinate extends AbstractCoordinate {
     }
 
     public CartesianCoordinate setY(double y) {
-        return new CartesianCoordinate(this.x, y, this.z);
+        return handler.getCartesianCoordinate(this.x, y, this.z);
     }
 
     public double getZ() {
@@ -52,7 +56,7 @@ public final class CartesianCoordinate extends AbstractCoordinate {
     }
 
     public CartesianCoordinate setZ(double z) {
-        return new CartesianCoordinate(this.x, this.y, z);
+        return handler.getCartesianCoordinate(this.x, this.y, z);
     }
 
     @Override
