@@ -45,7 +45,7 @@ public class DogPhotoManager extends PhotoManager {
 	}
 	
     /**
-	 * @override
+     * @override
 	 */
 	public DogPhoto getPhotoFromId(PhotoId id) {
 		if (id.isNullId()) {
@@ -53,21 +53,29 @@ public class DogPhotoManager extends PhotoManager {
 		}
         
         // cache hit
-		DogPhoto result = doGetPhotoFromId(id);  // checked by callee
+		DogPhoto result = null;
+		try {
+			result = doGetPhotoFromId(id);  // checked by callee
+		} catch (IllegalArgumentException e) {
+			// query db instead
+			result = null;
+		}
 		
         // cache miss -> query db
 		if (result == null) {
-			try {
-				PreparedStatement stmt = getReadingStatement("SELECT * FROM photos WHERE id = ?");
-				result = (DogPhoto) readObject(stmt, id.asInt());
-			} catch (SQLException sex) {
-				SysLog.logThrowable(sex);
+			for (int i = 0; i < 3; i++) {  // retry three times
+				try {
+					PreparedStatement stmt = getReadingStatement("SELECT * FROM photos WHERE id = ?");
+					result = (DogPhoto) readObject(stmt, id.asInt());
+					break;
+				} catch (SQLException sex) {
+					SysLog.logThrowable(sex);
+				}
 			}
 			if (result != null) {
 				doAddPhoto(result);
 			}
 		}
-		
 		return result;
 	}
 	
@@ -100,7 +108,7 @@ public class DogPhotoManager extends PhotoManager {
 			throw new NullPointerException("Can not add photo as it is null.");
 		}
 		PhotoId id = photo.getId();
-		assertIsNewPhoto(id);
+			assertIsNewPhoto(id);
 		doAddPhoto(photo);
 
 		try {
@@ -109,6 +117,8 @@ public class DogPhotoManager extends PhotoManager {
 			ServiceMain.getInstance().saveGlobals();
 		} catch (SQLException sex) {
 			SysLog.logThrowable(sex);
+		} catch (NullPointerException nex){
+			SysLog.logThrowable(nex);
 		}
 	}
 	
@@ -219,7 +229,7 @@ public class DogPhotoManager extends PhotoManager {
 		DogPhoto result = getPhotoFromId(id);
 		while((result != null) && !result.isVisible()) {
 			id = filter.getRandomDisplayablePhotoId();
-			result = getPhotoFromId(id);
+				result = getPhotoFromId(id);
 			if ((result != null) && !result.isVisible()) {
 				filter.addProcessedPhoto(result);
 			}
