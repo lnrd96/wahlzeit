@@ -31,6 +31,13 @@ public class PhotoCaseManager extends ObjectManager {
 	/**
 	 * 
 	 */
+	@PatternInstance(
+		patternName = "Singleton",
+		participants = {"PhotoCaseManager"}
+	)
+	/**
+	 * 
+	 */
 	protected static final PhotoCaseManager instance = new PhotoCaseManager();
 
 	/**
@@ -65,6 +72,10 @@ public class PhotoCaseManager extends ObjectManager {
 	 * 
 	 * @methodtype factory
 	 */
+	@PatternInstance(
+		patternName = "Object Factory",
+		participants = "PhotoCaseManager, ObjectManager, PhotoCase"
+	)
 	protected PhotoCase createObject(ResultSet rset) throws SQLException {
 		return new PhotoCase(rset);
 	}
