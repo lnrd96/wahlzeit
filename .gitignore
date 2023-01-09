@@ -9,3 +9,6 @@
 .project
 .classpath
 .history
+.metals
+.bloop
+.vscode
