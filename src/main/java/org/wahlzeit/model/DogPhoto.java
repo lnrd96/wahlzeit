@@ -15,6 +15,7 @@ public class DogPhoto extends Photo {
 	 * 
 	 */
     protected String dogName;
+    protected Dog dog;  // TODO: protected?
     protected double cutenessFactor;
 
 	/**
