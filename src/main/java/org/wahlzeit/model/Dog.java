@@ -22,6 +22,13 @@ public class Dog extends DataObject {
     
     private String name;
     private int age;
+
+    public Dog(String id, String name, int age, DogType type) {
+        setId(id);
+        setName(name);
+        setAge(age);
+        setType(type);
+    }
     
     public String getId() {
         return id;
