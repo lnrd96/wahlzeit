@@ -14,9 +14,8 @@ public class DogPhoto extends Photo {
 	/**
 	 * 
 	 */
-    protected String dogName;
-    protected Dog dog;  // TODO: protected?
-    protected double cutenessFactor;
+    protected Dog dog;  // dog specific properties are in the Dog class!
+    protected double cutenessFactor;  // cutenessFactor is photo specific!
 
 	/**
      * @methodtype constructor
@@ -49,12 +48,8 @@ public class DogPhoto extends Photo {
 	/**
      * @methodtype constructor
 	 */
-    public DogPhoto(String dogName, double cutenessFactor) throws NullPointerException, IllegalStateException {
+    public DogPhoto(double cutenessFactor) throws NullPointerException, IllegalStateException {
         super();
-        if (dogName == null){
-            throw new NullPointerException("String `dogName` is null.");
-        }
-        this.dogName = dogName;
         this.cutenessFactor = cutenessFactor;
         this.assertClassInvariants();
     }
@@ -65,26 +60,10 @@ public class DogPhoto extends Photo {
         return cutenessFactor;
     }
 	/**
-     * @methodtype get
-	 */
-    public String getName() {
-        return dogName;
-    }
-	/**
      * @methodtype set
 	 */
     public void setCutenessFactor(double cutenessFactor) throws IllegalStateException {
         this.cutenessFactor = cutenessFactor;
-        this.assertClassInvariants();
-    }
-	/**
-     * @methodtype set
-	 */
-    public void setName(String name) throws IllegalStateException {
-        if (name == null){
-            throw new NullPointerException("String `name` for doggo is null.");
-        }
-        this.dogName = name;
         this.assertClassInvariants();
     }
     public void writeOn(ResultSet rset) throws SQLException, IllegalStateException, NullPointerException {
@@ -94,7 +73,6 @@ public class DogPhoto extends Photo {
             throw new NullPointerException("ResultSet is null.");
         }
         super.writeOn(rset);
-		rset.updateString("dog_name", dogName);
 		rset.updateDouble("dog_cuteness_factor", cutenessFactor);
         this.assertClassInvariants();
     }
@@ -105,20 +83,15 @@ public class DogPhoto extends Photo {
             throw new NullPointerException("ResultSet is null.");
         }
         super.readFrom(rset);
-		dogName = rset.getString("dog_name");
 		cutenessFactor = rset.getDouble("cuteness_factor");
         this.assertClassInvariants();
     }
     
     protected void assertClassInvariants() throws IllegalStateException {
-        if (this.dogName == null || this.dogName.length() < 3){
-            throw new IllegalStateException("Invalid dog name: Missing or too short. " +
-                                            "Give your dog a proper name, at least sth. like \"Bob\".");
-        }
         if (Double.isNaN(this.cutenessFactor) || Double.isInfinite(this.cutenessFactor) ||
                     this.cutenessFactor < 0.0 || this.cutenessFactor > 10.0){
                         throw new IllegalStateException("Invalid cutenessFactor value. Must be in [0,10].");
-            }
+        }
     }
 
 }
