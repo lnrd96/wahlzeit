@@ -2,6 +2,8 @@ package org.wahlzeit.model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.wahlzeit.services.*;
 import org.wahlzeit.utils.PatternInstance;
@@ -64,5 +66,53 @@ class DogManager extends ObjectManager {
         // no special characters or numbers
         assert !typeName.matches(".*[^a-zA-Z\\s].*");
     }
+
+    /*
+     * Methods working on shared ressources.
+     */
+    public synchronized Dog getDog(String id) {
+        return dogs.get(id);
+    }
+
+    public synchronized void updateDog(Dog dog) {
+        dogs.put(dog.getId(), dog);
+    }
+
+    public synchronized void deleteDog(String id) {
+        dogs.remove(id);
+    }
+
+     /**
+     * Get the number of dogs of a certain type.
+     * @param typeName name of the dog type
+     * @return number of dogs of the specified type
+     */
+    public synchronized int getNumberOfDogs(String typeName) {
+        DogType type = dogtypes.get(typeName);
+        int count = 0;
+        for (Dog dog : dogs.values()) {
+            if (dog.getType() == type) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /**
+     * Get a set of all dogs of a certain type.
+     * @param typeName name of the dog type
+     * @return set of dogs of the specified type
+     */
+    public synchronized Set<Dog> getDogsOfType(String typeName) {
+        DogType type = dogtypes.get(typeName);
+        Set<Dog> result = new HashSet<Dog>();
+        for (Dog dog : dogs.values()) {
+            if (dog.getType() == type) {
+                result.add(dog);
+            }
+        }
+        return result;
+    }
+
   
 }
