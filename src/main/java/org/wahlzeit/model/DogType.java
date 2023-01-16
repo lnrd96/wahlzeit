@@ -37,6 +37,10 @@ public class DogType extends DataObject {
         return new Dog(name, age, this);
     }
 
+    public boolean isSubtype() {
+        return supertype != null;
+    }
+
     /**
      * Functions to handle and inspect the type hierarchie
      */
