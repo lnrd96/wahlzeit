@@ -22,16 +22,13 @@ class DogManager extends ObjectManager {
         patternName = "Singleton",
         participants = {"DogManager"}
     )
-    private static DogManager instance = null;
+    private static final DogManager instance = new DogManager();
 
     private DogManager() {
         // private constructor to prevent instantiation
     }
 
     public static DogManager getInstance() {
-        if (instance == null) {
-            instance = new DogManager();
-        }
         return instance;
     }
 
