@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.wahlzeit.services.DataObject;
@@ -41,6 +42,19 @@ public class DogType extends DataObject {
         return supertype != null;
     }
 
+    public boolean hasInstance(Dog dog) {
+        assert (dog != null) : "asked about null object";
+        if (dog.getType() == this) {
+          return true;
+        }
+        for (DogType type : subtypes) {
+          if (type.hasInstance(dog)) {
+            return true;
+          }
+        }
+        return false;
+    }
+
     /**
      * Functions to handle and inspect the type hierarchie
      */
@@ -66,6 +80,8 @@ public class DogType extends DataObject {
 
     // Add a subtype
     public void addSubtype(DogType subtype) {
+        assert (subtype != null) : "tried to set null sub-type";
+        subtype.setSupertype(this);
         subtypes.add(subtype);
     }
 
@@ -77,6 +93,10 @@ public class DogType extends DataObject {
     // Check if the type has a subtype
     public boolean hasSubtype(DogType subtype) {
         return subtypes.contains(subtype);
+    }
+
+    public Iterator<DogType> getSubTypeIterator() {
+        return subtypes.iterator();
     }
 
     /**
