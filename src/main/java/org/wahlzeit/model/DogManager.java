@@ -18,6 +18,23 @@ class DogManager extends ObjectManager {
      * It acts as a central point of control for the creation, registration, and retrieval of the objects.
      */
 
+    @PatternInstance (
+        patternName = "Singleton",
+        participants = {"DogManager"}
+    )
+    private static DogManager instance = null;
+
+    private DogManager() {
+        // private constructor to prevent instantiation
+    }
+
+    public static DogManager getInstance() {
+        if (instance == null) {
+            instance = new DogManager();
+        }
+        return instance;
+    }
+
     // references to Dog instances
     private HashMap<String, Dog> dogs = new HashMap<String, Dog>();
     // references to Dog types
@@ -29,10 +46,10 @@ class DogManager extends ObjectManager {
         return new Dog(rset);
     }
 
-    public Dog createDog(String typeName) {
+    public Dog createDog(String typeName, String name, int age) {
         assertIsValidDogTypeName(typeName);
         DogType type = getDogType(typeName);
-        Dog instance = type.createInstance();
+        Dog instance = type.createInstance(name, age);
         dogs.put(instance.getId(), instance);
         return instance;
     }
