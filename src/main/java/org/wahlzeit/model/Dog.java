@@ -3,6 +3,7 @@ package org.wahlzeit.model;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 import org.wahlzeit.services.DataObject;
 import org.wahlzeit.utils.PatternInstance;
@@ -23,11 +24,24 @@ public class Dog extends DataObject {
     private String name;
     private int age;
 
+    public Dog(DogType type) {
+        setId(getUniqueId());
+        setType(type);
+    }
+        
     public Dog(String id, String name, int age, DogType type) {
         setId(id);
         setName(name);
         setAge(age);
         setType(type);
+    }
+	
+    public Dog(ResultSet rset) throws SQLException {
+		readFrom(rset);
+	}
+    
+    private String getUniqueId() {
+        return UUID.randomUUID().toString();
     }
     
     public String getId() {
@@ -73,7 +87,6 @@ public class Dog extends DataObject {
     @Override
     public void readFrom(ResultSet rset) throws SQLException {
 		name = rset.getString("dog_name");
-        
     }
 
     @Override
