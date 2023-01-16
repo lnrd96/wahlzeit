@@ -24,9 +24,9 @@ class DogManager extends ObjectManager {
     private HashMap<String, DogType> dogtypes = new HashMap<String, DogType>();
 
     @Override
-    protected Persistent createObject(ResultSet rset) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+    protected Dog createObject(ResultSet rset) throws SQLException {
+        // delegate to Dog class
+        return new Dog(rset);
     }
 
     public Dog createDog(String typeName) {
