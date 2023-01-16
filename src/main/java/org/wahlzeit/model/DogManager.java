@@ -9,7 +9,7 @@ import org.wahlzeit.utils.PatternInstance;
 
 @PatternInstance (
 	patternName = "Type Object",
-	participants = {"Dog, DogType, DogManager"}
+	participants = {"Dog", "DogType", "DogManager"}
 )
 class DogManager extends ObjectManager {
     /**
