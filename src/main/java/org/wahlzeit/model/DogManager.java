@@ -48,6 +48,7 @@ class DogManager extends ObjectManager {
     public Dog createDog(String typeName, String name, int age) {
         assertIsValidDogTypeName(typeName);
         DogType type = getDogType(typeName);
+        // delegate to DogType class
         Dog instance = type.createInstance(name, age);
         dogs.put(instance.getId(), instance);
         return instance;
