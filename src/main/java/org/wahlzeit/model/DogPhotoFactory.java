@@ -67,5 +67,12 @@ public class DogPhotoFactory extends PhotoFactory {
 		}
 		return new DogPhoto(rs);
 	}
+	
+	/**
+	 * @override
+	 */
+	public DogPhoto createPhoto(Double cutenessFactor) {
+		return new DogPhoto(cutenessFactor);
+	}
 
 }
