@@ -66,6 +66,22 @@ public class DogPhoto extends Photo {
         this.cutenessFactor = cutenessFactor;
         this.assertClassInvariants();
     }
+	/**
+     * @methodtype get
+	 */
+    public Dog getDog() {
+        return dog;
+    }
+	/**
+     * @methodtype set
+	 */
+    public void setDog(Dog dog){
+        if (dog == null) {
+            throw new NullPointerException("Dog is null.");
+        }
+        this.dog = dog;
+        this.assertClassInvariants();
+    }
     public void writeOn(ResultSet rset) throws SQLException, IllegalStateException, NullPointerException {
         this.assertClassInvariants();
         if (rset == null){
